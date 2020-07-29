@@ -22,7 +22,7 @@ object CmdUtil {
                 "[CMD] - failure to execute command [${command} under ${dir}\n message: ${process.errorStream.bufferedReader()
                     .readText()}"
             if (interruptWhenCmdFailed) {
-                throw  CmdExecuteException(command, failureMsg)
+                throw  CmdExecuteException(failureMsg)
 
             } else {
                 println(failureMsg)

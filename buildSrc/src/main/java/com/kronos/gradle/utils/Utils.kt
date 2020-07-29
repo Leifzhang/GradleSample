@@ -56,7 +56,7 @@ object Utils {
                 }
             }
             PluginLogger.warn(
-                "【HbConfig】【警告】由于分支$branch 对应的远程配置文件并不存在，" +
+                "【DepConfig】【警告】由于分支$branch 对应的远程配置文件并不存在，" +
                         "根据自动策略将自动使用 $url 的配置文件"
             )
         }
