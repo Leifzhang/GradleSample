@@ -10,6 +10,7 @@ object GitUtil {
             .replace("\n", "")
     }
 
+    @JvmStatic
     fun curBranchName(dir: File): String {
         return CmdUtil.executeForOutput("git rev-parse --abbrev-ref HEAD", dir)
             .replace("\n", "")
@@ -71,6 +72,9 @@ object GitUtil {
         return text.contains("origin/$branch")
     }
 
+    fun isLocalExistBranch(dir: File, branch: String): Boolean {
+        return File(dir, ".git/refs/heads/$branch").exists()
+    }
 
     fun pullRebase(dir: File): Boolean {
         return CmdUtil.execute("git pull --rebase", dir, false)
