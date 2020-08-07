@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<repo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.w3school.com.cn"
+    xsi:schemaLocation="http://www.w3school.com.cn repo.xsd">
+
+    <!--srcBuild：是否开启源码依赖，该配置优先级低于module中的srcBuild-->
+    <!--branch：
+        分支 用于在源码调试时统一分支，会自动进行分支切换，
+        如果有未暂存的文件修改会导致编译失败，并提示
+        该配置优先级 低于 module 配置中的 branch
+        -->
+
+    <default srcBuild="false" />
+
+    <!--
+        origin:远程路径
+        substitute: 将被替换掉的远程依赖 group:name
+
+        name:唯一标示某一个模块，该属性名 也是 该模块在原仓库的默认文件夹名称
+    -->
+
+
+    <module name="RouterLib" branch="master"
+        origin="https://github.com/Leifzhang/Router-Android.git" srcBuild="false"
+        substitute="com.github.leifzhang:routerLib" />
+</repo>
