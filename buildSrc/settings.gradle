@@ -1,0 +1,2 @@
+include ':plugin-dep'
+project(":plugin-dep").projectDir = new File("../plugin-dep")
