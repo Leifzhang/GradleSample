@@ -23,5 +23,4 @@ apply plugin: 'kotlin'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":plugin-dep")
-    implementation project(":plugin-repo")
 }

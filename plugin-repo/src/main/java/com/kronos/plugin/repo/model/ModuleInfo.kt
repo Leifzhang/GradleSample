@@ -126,12 +126,8 @@ open class ModuleInfo(
         }
     }
 
-
     fun needSubstitute(): Boolean {
         return !substitute.isNullOrBlank()
     }
-
-    val projectNotationPath: String
-        get() = ":${name}"
 
 }
