@@ -1,12 +1,12 @@
-package com.kronos.plugin.dep.reposettings.parse;
+package com.kronos.plugin.repo.parse;
 
 
-import com.kronos.plugin.dep.reposettings.RepoConstants;
-import com.kronos.plugin.dep.reposettings.RepoLogger;
-import com.kronos.plugin.dep.reposettings.model.ModuleInfo;
-import com.kronos.plugin.dep.reposettings.model.RepoInfo;
-import com.kronos.plugin.dep.reposettings.model.SubstituteModule;
-import com.kronos.plugin.dep.utils.GitUtil;
+import com.kronos.plugin.repo.utils.GitUtil;
+import com.kronos.plugin.repo.RepoConstants;
+import com.kronos.plugin.repo.RepoLogger;
+import com.kronos.plugin.repo.model.ModuleInfo;
+import com.kronos.plugin.repo.model.RepoInfo;
+import com.kronos.plugin.repo.model.SubstituteModule;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

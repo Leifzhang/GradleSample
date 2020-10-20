@@ -1,2 +1,4 @@
 include ':plugin-dep'
 project(":plugin-dep").projectDir = new File("../plugin-dep")
+include ':plugin-repo'
+project(":plugin-repo").projectDir = new File("../plugin-repo")

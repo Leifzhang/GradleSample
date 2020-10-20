@@ -1,7 +1,7 @@
-package com.kronos.plugin.dep.reposettings.model
+package com.kronos.plugin.repo.model
 
-import com.kronos.plugin.dep.reposettings.RepoLogger
-import com.kronos.plugin.dep.utils.GitUtil
+import com.kronos.plugin.repo.utils.GitUtil
+import com.kronos.plugin.repo.RepoLogger
 import java.io.File
 import java.lang.RuntimeException
 
@@ -14,7 +14,7 @@ import java.lang.RuntimeException
  */
 open class ModuleInfo(
     val name: String,
-    val origin: String,
+    private val origin: String,
     val path: String?,
     val srcBuild: Boolean,
     val substitute: String?,
@@ -45,8 +45,7 @@ open class ModuleInfo(
 
 
     private fun isModuleGitDirExist(): Boolean {
-        val exists = moduleGitRootPath.exists()
-        return exists;
+        return moduleGitRootPath.exists()
     }
 
     /**
@@ -57,6 +56,7 @@ open class ModuleInfo(
     fun settingProject() {
         if (!isModuleGitDirExist()) {
             GitUtil.clone(moduleGitRootPath, origin)
+            //return
         }
 
 

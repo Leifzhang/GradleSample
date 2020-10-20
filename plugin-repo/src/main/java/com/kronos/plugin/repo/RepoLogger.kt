@@ -1,4 +1,4 @@
-package com.kronos.plugin.dep.reposettings
+package com.kronos.plugin.repo
 
 import org.gradle.api.Project
 import org.gradle.api.logging.Logging

@@ -1,2 +1,8 @@
+include ':plugin-repo'
 include ':app'
 include ':plugin-dep'
+/*includeBuild("../subModules/Router-Android") {
+    dependencySubstitution {
+       // substitute(module("com.github.leifzhang:QrCodeLibrary")).with(project(":QrCodeLibrary"))
+    }
+}*/

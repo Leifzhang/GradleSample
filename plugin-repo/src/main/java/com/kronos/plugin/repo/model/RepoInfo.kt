@@ -1,4 +1,4 @@
-package com.kronos.plugin.dep.reposettings.model
+package com.kronos.plugin.repo.model
 
 import java.io.File
 

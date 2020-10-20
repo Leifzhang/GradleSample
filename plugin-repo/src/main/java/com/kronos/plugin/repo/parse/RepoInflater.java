@@ -1,7 +1,7 @@
-package com.kronos.plugin.dep.reposettings.parse;
+package com.kronos.plugin.repo.parse;
 
 
-import com.kronos.plugin.dep.reposettings.model.RepoInfo;
+import com.kronos.plugin.repo.model.RepoInfo;
 
 import org.gradle.api.GradleException;
 import org.xml.sax.SAXException;

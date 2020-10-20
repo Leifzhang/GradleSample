@@ -1,4 +1,4 @@
-package com.kronos.plugin.dep.reposettings;
+package com.kronos.plugin.repo;
 
 public class RepoConstants {
 
