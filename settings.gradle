@@ -1,8 +1,17 @@
 include ':plugin-repo'
 include ':app'
 include ':plugin-dep'
-/*includeBuild("../subModules/Router-Android") {
-    dependencySubstitution {
-       // substitute(module("com.github.leifzhang:QrCodeLibrary")).with(project(":QrCodeLibrary"))
+
+buildscript {
+    repositories {
+        maven {
+            url 'https://dl.bintray.com/leifzhang/maven'
+        }
     }
-}*/
+    dependencies {
+        classpath "com.kronos.plugin:plugin-repo:0.1.7"
+    }
+}
+
+
+apply plugin: 'repo-setting'

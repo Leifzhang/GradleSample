@@ -130,4 +130,6 @@ open class ModuleInfo(
         return !substitute.isNullOrBlank()
     }
 
+    val projectNotationPath: String
+        get() = ":${name}"
 }
