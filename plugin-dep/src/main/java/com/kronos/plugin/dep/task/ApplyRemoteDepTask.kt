@@ -13,6 +13,10 @@ import java.util.*
 
 open class ApplyRemoteDepTask : DefaultTask() {
 
+    init {
+        group = "abc"
+    }
+
     @TaskAction
     fun apply() {
 

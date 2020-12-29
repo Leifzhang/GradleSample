@@ -1,6 +1,6 @@
-include ':plugin-repo'
+//include ':plugin-repo'
 include ':app'
-include ':plugin-dep'
+//include ':plugin-dep'
 
 buildscript {
     repositories {

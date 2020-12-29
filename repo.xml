@@ -20,5 +20,5 @@
 
 
     <module name="QrCodeLibrary" branch="master" origin="https://github.com/Leifzhang/QRScaner.git"
-        srcBuild="true" substitute="com.github.leifzhang:QrCodeLibrary" />
+        srcBuild="false" substitute="com.github.leifzhang:QrCodeLibrary" />
 </repo>
