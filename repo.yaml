@@ -1,0 +1,9 @@
+repo:
+  src: false
+  modules:
+  - branch: master
+    origin: https://github.com/Leifzhang/QRScaner.git
+    srcBuild: true
+  - branch: master
+    origin: https://github.com/Leifzhang/QRScaner.git
+    srcBuild: true

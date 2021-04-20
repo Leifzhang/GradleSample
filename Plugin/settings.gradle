@@ -1,0 +1,3 @@
+include ':plugin-repo'
+include ':plugin-dep'
+rootProject.name = "Plugin"
