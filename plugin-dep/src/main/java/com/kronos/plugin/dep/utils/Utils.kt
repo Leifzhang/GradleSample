@@ -9,7 +9,7 @@ object Utils {
      * 第三方库依赖定义  远端地址
      */
     fun getDepRemoteUrl(curBranch: String): String {
-        return "https://raw.githubusercontent.com/Leifzhang/DepPlugin/raw/$curBranch/dep.gradle"
+        return "https://raw.githubusercontent.com/Leifzhang/DepPlugin/$curBranch/dep.gradle"
     }
 
     fun isDepUrlExist(url: String): Boolean {
