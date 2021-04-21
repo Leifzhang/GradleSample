@@ -1,0 +1,29 @@
+plugins {
+    id("groovy")
+    id("kotlin")
+    id("java-gradle-plugin")
+}
+
+//apply from: './upload_bintray.gradle'
+
+compileKotlin.sourceCompatibility = JavaVersion.VERSION_1_8
+compileKotlin.targetCompatibility = JavaVersion.VERSION_1_8
+compileKotlin.kotlinOptions.jvmTarget = "1.8"
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation 'org.yaml:snakeyaml:1.26'
+}
+
+
+gradlePlugin {
+    plugins {
+        version {
+            // 在 app 模块需要通过 id 引用这个插件
+            id = 'repo-setting'
+            // 实现这个插件的类的路径
+            implementationClass = 'com.kronos.plugin.repo.RepoSettingsPlugin'
+        }
+    }
+}

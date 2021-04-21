@@ -1,7 +1,5 @@
-//include ':plugin-repo'
 include ':app'
-//include ':plugin-dep'
-
+includeBuild("./Plugin")
 buildscript {
     repositories {
         maven {

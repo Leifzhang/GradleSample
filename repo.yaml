@@ -1,0 +1,10 @@
+src: false
+modules:
+  - branch: master
+    origin: https://github.com/Leifzhang/QRScaner.git
+    srcBuild: true
+    name: QRScaner
+  - branch: master
+    origin: https://github.com/Leifzhang/QRScaner.git
+    srcBuild: false
+    name: Router
