@@ -1,12 +1,11 @@
 package com.kronos.plugin.repo.parse;
 
 
-import com.kronos.plugin.repo.utils.GitUtil;
 import com.kronos.plugin.repo.RepoConstants;
 import com.kronos.plugin.repo.RepoLogger;
 import com.kronos.plugin.repo.model.ModuleInfo;
 import com.kronos.plugin.repo.model.RepoInfo;
-import com.kronos.plugin.repo.model.SubstituteModule;
+import com.kronos.plugin.repo.utils.GitUtil;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -135,12 +134,6 @@ class RepoInflateImpl {
             parseModuleInfo(repoInfo, moduleElement);
         }
 
-
-        final NodeList substituteNodeList = rootElement.getElementsByTagName(TAG_SUBSTITUTE);
-        for (int i = 0; i < substituteNodeList.getLength(); i++) {
-            final Element substituteModuleItem = (Element) substituteNodeList.item(i);
-            parseSubstituteModule(repoInfo, substituteModuleItem);
-        }
         return repoInfo;
 
     }
@@ -166,18 +159,12 @@ class RepoInflateImpl {
             }
         }
 
-        final ModuleInfo moduleInfo = new ModuleInfo(name, origin, path, srcBuild, substitute, repoInfo.getRepoManageProjectDir(), branch);
+        final ModuleInfo moduleInfo = new ModuleInfo(name, origin, srcBuild, substitute, repoInfo.getRepoManageProjectDir(), branch);
 
         repoInfo.getModuleInfoMap().put(name, moduleInfo);
 
 
     }
 
-    public void parseSubstituteModule(RepoInfo repoInfo, Element element) {
-        final String moduleNotation = element.getAttribute(ATTRIBUTE_TARGET_MODULE);
-        final String projectNotation = element.getAttribute(ATTRIBUTE_PROJECT);
 
-        final SubstituteModule substituteModule = new SubstituteModule(moduleNotation, projectNotation);
-        repoInfo.getSubstituteModules().add(substituteModule);
-    }
 }

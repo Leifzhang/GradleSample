@@ -15,12 +15,10 @@ import java.lang.RuntimeException
 open class ModuleInfo(
     val name: String,
     private val origin: String,
-    val path: String?,
     val srcBuild: Boolean,
     val substitute: String?,
     val repoManageProjectDir: File,
     val branch: String
-
 ) {
 
     //模块所属git工程的根路径
@@ -33,14 +31,7 @@ open class ModuleInfo(
         val moduleRootDirName = origin.split("/").last().split(".").first()
 
         moduleGitRootPath = File(repoManageProjectDir, moduleRootDirName)
-        if (path == null || "" == path) {
-            modulePath = File(moduleGitRootPath, name)
-        } else {
-            modulePath = File(moduleGitRootPath, path)
-
-        }
-//        RepoLogger.info("moduleRootDirname = ${moduleRootDirName} ,int path :${modulePath}")
-
+        modulePath = File(moduleGitRootPath, name)
     }
 
 
@@ -108,9 +99,11 @@ open class ModuleInfo(
         if (!success) {
             throw RuntimeException(
                 " execute command [git pull --rebase] for project ${name} failed，please check  to see if  files conflict，" +
-                        "if conflict,  resolve it. then try again ,\n file status:\n${GitUtil.fileStatus(
-                            moduleGitRootPath
-                        )}"
+                        "if conflict,  resolve it. then try again ,\n file status:\n${
+                            GitUtil.fileStatus(
+                                moduleGitRootPath
+                            )
+                        }"
             )
         }
 
@@ -124,10 +117,6 @@ open class ModuleInfo(
             //没有使用源码依赖模式
             null
         }
-    }
-
-    fun needSubstitute(): Boolean {
-        return !substitute.isNullOrBlank()
     }
 
     val projectNotationPath: String

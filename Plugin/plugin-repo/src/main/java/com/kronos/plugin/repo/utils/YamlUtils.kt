@@ -1,10 +1,11 @@
 package com.kronos.plugin.repo.utils
 
-import com.kronos.plugin.repo.model.YamlRepoInfo
+import com.kronos.plugin.repo.model.RepoInfo
+import com.kronos.plugin.repo.model.parser
+import org.gradle.internal.impldep.com.esotericsoftware.minlog.Log
 import org.yaml.snakeyaml.Yaml
 import java.io.File
 import java.io.FileInputStream
-import java.io.InputStream
 
 /**
  *
@@ -14,9 +15,26 @@ import java.io.InputStream
  */
 object YamlUtils {
 
-    fun inflate(projectDir: File) {
+    fun inflate(projectDir: File): RepoInfo {
         val yaml = Yaml()
         val f = File(projectDir, "repo.yaml")
-        val map = yaml.load<YamlRepoInfo>(FileInputStream(f))
+        val dir = File(projectDir.parentFile, "subModules")
+        val repoInfo = RepoInfo(dir)
+        if (f.exists()) {
+            val repoInfoYaml = yaml.load<LinkedHashMap<String, Any>>(FileInputStream(f))
+            if (repoInfoYaml.containsKey("modules")) {
+                val modulesList = repoInfoYaml["modules"]
+                if (modulesList is MutableList<*>) {
+                    modulesList.forEach {
+                        if (it is LinkedHashMap<*, *>) {
+                            val module = parser(it as LinkedHashMap<Any, Any>, dir)
+                            Log.info("moduleName:${module.name}")
+                            repoInfo.moduleInfoMap[module.name] = module
+                        }
+                    }
+                }
+            }
+        }
+        return repoInfo
     }
 }

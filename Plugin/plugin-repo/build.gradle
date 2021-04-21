@@ -1,10 +1,10 @@
-//apply from: './upload_bintray.gradle'
 plugins {
     id("groovy")
     id("kotlin")
     id("java-gradle-plugin")
 }
 
+//apply from: './upload_bintray.gradle'
 
 compileKotlin.sourceCompatibility = JavaVersion.VERSION_1_8
 compileKotlin.targetCompatibility = JavaVersion.VERSION_1_8
