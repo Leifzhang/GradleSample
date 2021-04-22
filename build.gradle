@@ -16,7 +16,7 @@ buildscript {
     }
 }
 plugins {
-    id("dep-plugin") apply false
+    id("dep-plugin")
 }
 
 

@@ -12,6 +12,9 @@ class KronosPlugin : Plugin<Project> {
         ) {
             it.group = "kronos"
         }
+        project.allprojects {
+            task.apply()
+        }
         task.apply()
     }
 
