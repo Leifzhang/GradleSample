@@ -12,6 +12,7 @@ class RepoSettingsPlugin : Plugin<Settings> {
         settings.gradle.addBuildListener(object : BuildAdapter() {
 
             override fun settingsEvaluated(settings: Settings) {
+                //RepoLogger.setProject(settings.rootProject)
                 super.settingsEvaluated(settings)
                 var repoInfo = YamlUtils.inflate(settings.rootDir)
                 if (repoInfo.moduleInfoMap.isEmpty()) {
@@ -24,22 +25,22 @@ class RepoSettingsPlugin : Plugin<Settings> {
                 }
                 repoInfo.moduleInfoMap.forEach { (s, moduleInfo) ->
                     if (moduleInfo.srcBuild) {
-                        RepoLogger.info("${moduleInfo.name} 加入了工程构建中 ")
+                        RepoLogger.info("${moduleInfo.name} 通过includeBuild 加入了工程构建中 ")
                         moduleInfo.settingProject()
-                        settings.includeBuild(moduleInfo.moduleGitRootPath) { config ->
-                            config.dependencySubstitution {
-                                if (moduleInfo.substitute?.isNotEmpty() == true) {
-                                    moduleInfo.substitute.apply {
-                                        it.substitute(it.module(this)).because("Repo work")
-                                            .with(it.project(moduleInfo.projectNotationPath))
-                                    }
-                                }
-                            }
-                        }
+                        settings.includeBuild(moduleInfo.moduleGitRootPath)
                         RepoLogger.info("module:${moduleInfo.name} 已加入到工程依赖 , 分支:" + moduleInfo.curBranch())
                     }
                 }
+                repoInfo.includeModuleInfo.forEach { (s, moduleInfo) ->
+                    moduleInfo.settingProject()
+                    moduleInfo.projectNameList.forEach {
+                        settings.include(":${it}")
+                        RepoLogger.info("$it 路径为 ${moduleInfo.getModulePath(it)}");
+                        settings.project(":${moduleInfo.name}").projectDir = moduleInfo.getModulePath(it)
+                        RepoLogger.info("moudle:${moduleInfo.name} 已加入到工程依赖 , 分支:" + moduleInfo.curBranch())
 
+                    }
+                }
             }
         })
     }

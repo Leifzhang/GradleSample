@@ -9,6 +9,7 @@ plugins {
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
+    implementation 'org.yaml:snakeyaml:1.26'
 }
 
 compileKotlin.sourceCompatibility = JavaVersion.VERSION_1_8

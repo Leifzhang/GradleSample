@@ -11,6 +11,26 @@ fun parser(map: LinkedHashMap<Any, Any>, project: File): ModuleInfo {
     val origin = map["origin"].toString()
     val branch = map["branch"].toString()
     val srcBuild = map["srcBuild"].toString().toBoolean()
-    val substitute = map["substitute"].toString()
-    return ModuleInfo(name, origin, srcBuild, substitute, project, branch)
+    return ModuleInfo(name, origin, srcBuild, project, branch)
+}
+
+
+fun parserInclude(map: LinkedHashMap<Any, Any>, project: File): IncludeModuleInfo? {
+    val name = map["name"].toString()
+    val origin = map["origin"].toString()
+    val branch = map["branch"].toString()
+    val srcBuild = map["srcBuild"].toString().toBoolean()
+    val modules = map["modules"]
+    val moduleList = mutableListOf<String>()
+    if (modules is MutableList<*>) {
+        modules.forEach {
+            if (it is String) {
+                moduleList.add(it)
+            }
+        }
+    }
+    if (moduleList.isEmpty()) {
+        return null
+    }
+    return IncludeModuleInfo(name, origin, srcBuild, project, branch, moduleList)
 }

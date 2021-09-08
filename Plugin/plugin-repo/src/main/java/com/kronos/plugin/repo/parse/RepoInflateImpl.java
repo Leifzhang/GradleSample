@@ -159,7 +159,7 @@ class RepoInflateImpl {
             }
         }
 
-        final ModuleInfo moduleInfo = new ModuleInfo(name, origin, srcBuild, substitute, repoInfo.getRepoManageProjectDir(), branch);
+        final ModuleInfo moduleInfo = new ModuleInfo(name, origin, srcBuild, repoInfo.getRepoManageProjectDir(), branch);
 
         repoInfo.getModuleInfoMap().put(name, moduleInfo);
 
