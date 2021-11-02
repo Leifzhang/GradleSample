@@ -2,14 +2,13 @@ include ':app'
 includeBuild("./Plugin")
 buildscript {
     repositories {
-        maven {
-            url 'https://dl.bintray.com/leifzhang/maven'
-        }
+
+        maven { setUrl("https://maven.aliyun.com/repository/central/") }
+
     }
     dependencies {
-        classpath "com.kronos.plugin:plugin-repo:0.1.7"
+    //    classpath "com.kronos.plugin:plugin-repo:0.1.7"
     }
 }
 
 
-apply plugin: 'repo-setting'
