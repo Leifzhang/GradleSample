@@ -1,6 +1,7 @@
 package com.kronos.plugin.dep
 
 import com.kronos.plugin.dep.task.ApplyRemoteDepTask
+import com.kronos.plugin.dep.utils.YamlUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -12,10 +13,11 @@ class KronosPlugin : Plugin<Project> {
         ) {
             it.group = "kronos"
         }
-        project.allprojects {
+   /*     project.allprojects {
             task.apply()
         }
-        task.apply()
+        task.apply()*/
+        YamlUtils.inflate(project.rootDir)
     }
 
 }

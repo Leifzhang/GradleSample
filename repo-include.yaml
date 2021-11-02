@@ -1,0 +1,8 @@
+src: false
+projects:
+  - branch: master
+    origin: https://github.com/Leifzhang/QRScaner.git
+    srcBuild: true
+    modules:
+      - name: QRScaner
+      - name: abb

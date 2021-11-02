@@ -1,29 +1,28 @@
 package com.kronos.plugin.repo.model
 
-import com.kronos.plugin.repo.utils.GitUtil
 import com.kronos.plugin.repo.RepoLogger
+import com.kronos.plugin.repo.utils.GitUtil
 import java.io.File
 import java.lang.RuntimeException
 
 /**
- * substitue 要变替换的的远程模块 格式为 'group:name:version' 可以不带version
- * name projectName 是该模块在原git项目中的project名字
- * name 会最多项目在git项目中的默认路径， 如果该项目在git工程中是层级路径，则 需要另指定path参数
- * @param repoManageProjectDir 项目clone在本地的路径
- * @param modulePath 模块在本地的路径
+ *
+ *  @Author LiABao
+ *  @Since 2021/9/8
+ *
  */
-open class ModuleInfo(
+open class IncludeModuleInfo(
     val name: String,
     private val origin: String,
     val srcBuild: Boolean,
     private val repoManageProjectDir: File,
-    val branch: String
+    val branch: String,
+    val projectNameList: MutableList<String>
 ) {
 
     //模块所属git工程的根路径
     var moduleGitRootPath: File
 
-    //模块的绝对路径，一个git工程可能包含了多个模块
 
     init {
         val moduleRootDirName = origin.split("/").last().split(".").first()
@@ -31,6 +30,10 @@ open class ModuleInfo(
         moduleGitRootPath = File(repoManageProjectDir, moduleRootDirName)
     }
 
+
+    fun getModulePath(name: String): File {
+        return File(moduleGitRootPath, name)
+    }
 
     private fun isModuleGitDirExist(): Boolean {
         return moduleGitRootPath.exists()

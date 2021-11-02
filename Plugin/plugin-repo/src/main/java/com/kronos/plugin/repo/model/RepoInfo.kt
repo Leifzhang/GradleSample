@@ -6,6 +6,8 @@ class RepoInfo(val repoManageProjectDir: File) {
 
     var moduleInfoMap: MutableMap<String, ModuleInfo> = mutableMapOf()
 
+    var includeModuleInfo: MutableMap<String, IncludeModuleInfo> = mutableMapOf()
+
     var defaultBranch: String? = null
 
     var srcBuild: Boolean = false
