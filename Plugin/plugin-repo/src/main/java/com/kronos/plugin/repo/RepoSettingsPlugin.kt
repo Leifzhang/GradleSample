@@ -36,9 +36,9 @@ class RepoSettingsPlugin : Plugin<Settings> {
                     moduleInfo.projectNameList.forEach {
                         settings.include(":${it}")
                         RepoLogger.info("$it 路径为 ${moduleInfo.getModulePath(it)}");
-                        settings.project(":${moduleInfo.name}").projectDir = moduleInfo.getModulePath(it)
-                        RepoLogger.info("moudle:${moduleInfo.name} 已加入到工程依赖 , 分支:" + moduleInfo.curBranch())
-
+                        settings.project(":${it}").projectDir =
+                            moduleInfo.getModulePath(it)
+                        RepoLogger.info("moudle:${it} 已加入到工程依赖 , 分支:" + moduleInfo.curBranch())
                     }
                 }
             }
