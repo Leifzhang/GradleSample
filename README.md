@@ -76,4 +76,6 @@ Gradle依赖替换,在项目开发过程中，不可避免的需要引入一些�
 
 然后依赖方式都使用implementation group:module:version 这样就会自动完成源码和aar的切换。
 
+特别是在includeBuilding的情况下，因为是独立工程，所以project的configuration并不会作用在隔壁工程上
+
 
