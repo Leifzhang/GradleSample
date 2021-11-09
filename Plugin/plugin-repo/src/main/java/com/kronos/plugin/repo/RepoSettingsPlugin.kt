@@ -4,11 +4,38 @@ import com.kronos.plugin.repo.parse.RepoInflater
 import com.kronos.plugin.repo.utils.YamlUtils
 import org.gradle.BuildAdapter
 import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.api.ProjectEvaluationListener
+import org.gradle.api.ProjectState
+import org.gradle.api.artifacts.component.ModuleComponentSelector
 import org.gradle.api.initialization.Settings
 
 class RepoSettingsPlugin : Plugin<Settings> {
 
     override fun apply(settings: Settings) {
+        settings.gradle.addProjectEvaluationListener(object : ProjectEvaluationListener {
+            override fun beforeEvaluate(project: Project) {
+                project.configurations.all {
+                    it.resolutionStrategy.dependencySubstitution.all { depend ->
+                        if (depend.requested is ModuleComponentSelector) {
+                            val moduleRequested = depend.requested as ModuleComponentSelector
+                            val p = project.rootProject.allprojects.find { p ->
+                                (p.group == moduleRequested.group && p.name == moduleRequested.module)
+                            }
+                            if (p != null) {
+                                depend.useTarget(project.project(p.path), "selected local project")
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            override fun afterEvaluate(project: Project, p1: ProjectState) {
+
+            }
+
+        })
         settings.gradle.addBuildListener(object : BuildAdapter() {
 
             override fun settingsEvaluated(settings: Settings) {
