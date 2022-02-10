@@ -2,7 +2,7 @@ src: false
 modules:
   - branch: master
     origin: https://github.com/Leifzhang/QRScaner.git
-    srcBuild: true
+    srcBuild: false
     name: QRScaner
   - branch: master
     origin: https://github.com/Leifzhang/QRScaner.git
