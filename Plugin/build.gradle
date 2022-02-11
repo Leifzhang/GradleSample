@@ -19,12 +19,9 @@ allprojects {
         maven { setUrl("https://maven.aliyun.com/repository/central/") }
         google()
     }
+    group = "com.kronos.plugin"
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-subprojects {
-    group = "com.kronos.plugin"
-
 }
