@@ -2,7 +2,7 @@ plugins {
     id("groovy")
     id("kotlin")
     id("java-gradle-plugin")
-    id("maven-publishing")
+    id("maven-publish")
 }
 
 //apply from: './upload_bintray.gradle'
