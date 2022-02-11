@@ -5,8 +5,6 @@ plugins {
     id("maven-publish")
 }
 
-//apply from: './upload_bintray.gradle'
-
 compileKotlin.sourceCompatibility = JavaVersion.VERSION_1_8
 compileKotlin.targetCompatibility = JavaVersion.VERSION_1_8
 compileKotlin.kotlinOptions.jvmTarget = "1.8"
