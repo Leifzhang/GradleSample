@@ -1,14 +1,31 @@
-include ':app'
-includeBuild("./Plugin")
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+        google()
+        maven {
+            url "https://dl.bintray.com/kotlin/kotlin-eap"
+        }
+    }
+
+    plugins {
+        id("org.gradle.kotlin.kotlin-dsl") version '2.2.0' apply(false)
+    }
+}
 buildscript {
     repositories {
-
+        mavenLocal()
         maven { setUrl("https://maven.aliyun.com/repository/central/") }
 
     }
     dependencies {
-    //    classpath "com.kronos.plugin:plugin-repo:0.1.7"
+        // 本地先尝试下 maven local 任务之后添加
+        //  classpath "com.kronos.plugin:plugin-repo:0.2.0"
+        //   classpath "com.kronos.plugin:plugin-version:0.2.0"
     }
 }
+// 本地先尝试下 maven local 任务之后添加
+//apply plugin: "kronos.plugins"
 
-
+include ':app'
+includeBuild("./Plugin")

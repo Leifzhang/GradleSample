@@ -3,9 +3,9 @@ plugins {
     id("kotlin")
     id("java-gradle-plugin")
     id("maven-publish")
+    id("org.gradle.kotlin.kotlin-dsl")
 }
 
-//apply from: './upload_bintray.gradle'
 
 dependencies {
     implementation gradleApi()
@@ -19,11 +19,17 @@ compileKotlin.kotlinOptions.jvmTarget = "1.8"
 
 gradlePlugin {
     plugins {
-        dependenciesPlugin {
+        mavenPlugin {
             // 在 app 模块需要通过 id 引用这个插件
-            id = 'kronos.dependencies'
+            id = 'kronos.library'
             // 实现这个插件的类的路径
-            implementationClass = 'com.kronos.plugin.dep.KronosPlugin'
+            implementationClass = 'com.kronos.plugin.version.LibraryMavenPlugin'
+        }
+        pluginsVersion {
+            // 在 app 模块需要通过 id 引用这个插件
+            id = 'kronos.plugins'
+            // 实现这个插件的类的路径
+            implementationClass = 'com.kronos.plugin.version.PluginsVersionPlugin'
         }
     }
 }
