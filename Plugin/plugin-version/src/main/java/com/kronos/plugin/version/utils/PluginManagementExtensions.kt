@@ -8,12 +8,15 @@ package com.kronos.plugin.version.utils
  */
 object PluginManagementExtensions {
 
-    val BUILD_VERSION = "+"
 
     val PLUGIN_MANAGEMENT_SCRIPT = "initscript {\n" + "    repositories {\n" +
-            "        mavenLocal() " +
+            "        mavenLocal()\n " +
+            "\n" +
+            "        maven { setUrl(\"https://maven.aliyun.com/repository/central/\") }\n" +
+            "        google()" +
+            "    }\n" +
             "    dependencies {\n" +
-            "        classpath \"com.bilibili.build:fawkes-library:${BUILD_VERSION}\"\n" +
+            "        classpath \"com.kronos.plugin:plugin-version:0.2.0\"\n" +
             "    }\n" +
             "}\n"
 

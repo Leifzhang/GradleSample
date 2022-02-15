@@ -3,6 +3,7 @@ plugins {
     id("kotlin")
     id("java-gradle-plugin")
     id("maven-publish")
+    id("org.gradle.kotlin.kotlin-dsl")
 }
 
 
@@ -26,7 +27,7 @@ gradlePlugin {
         }
         pluginsVersion {
             // 在 app 模块需要通过 id 引用这个插件
-            id = 'fawkes.plugins'
+            id = 'kronos.plugins'
             // 实现这个插件的类的路径
             implementationClass = 'com.kronos.plugin.version.PluginsVersionPlugin'
         }

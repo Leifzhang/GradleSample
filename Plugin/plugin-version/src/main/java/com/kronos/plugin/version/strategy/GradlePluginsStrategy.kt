@@ -18,12 +18,12 @@ class GradlePluginsStrategy(root: File) : Action<PluginResolutionStrategy> {
         if (strategyList.isNullOrEmpty()) {
             return
         }
-        strategy.eachPlugin { plugin ->
-            val key = plugin.target.id.id
+        strategy.eachPlugin {
+            val key = target.id.id
             if (strategyList.containsKey(key)) {
                 strategyList[key]?.apply {
                     pluginMavenUrl?.let {
-                        plugin.useModule(it)
+                        useModule(it)
                     }
                 }
             }

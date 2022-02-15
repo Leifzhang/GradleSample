@@ -13,7 +13,7 @@ import java.io.File
 class IncludeBuildInsertScript {
 
     fun execute(target: Settings, root: File) {
-        val initFile = getBuildTemp(root, "fawkes.settings.pluginManagement.gradle")
+        val initFile = getBuildTemp(root, "global.settings.pluginManagement.gradle")
         if (initFile.exists()) {
             initFile.delete()
         }

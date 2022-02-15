@@ -13,7 +13,7 @@ class PluginVersionGradlePlugin : Plugin<Gradle> {
 
     override fun apply(target: Gradle) {
         target.settingsEvaluated {
-            this.pluginManagement(DefaultPluginManagementAction(this))
+            pluginManagement(DefaultPluginManagementAction(this))
             GradlePluginsVersion().execute(this)
         }
     }

@@ -20,10 +20,8 @@ class DefaultPluginManagementAction(settings: Settings) : Action<PluginManagemen
         root?.let {
             pluginManagement.resolutionStrategy(GradlePluginsStrategy(it))
         }
-        pluginManagement.repositories { repository ->
-            repository.maven {
-                it.setUrl("https://nexus.bilibili.co/content/groups/carbon/")
-            }
+        pluginManagement.repositories {
+            mavenLocal()
         }
     }
 }
