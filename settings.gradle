@@ -1,3 +1,17 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+        google()
+        maven {
+            url "https://dl.bintray.com/kotlin/kotlin-eap"
+        }
+    }
+
+    plugins {
+        id("org.gradle.kotlin.kotlin-dsl") version '2.2.0' apply(false)
+    }
+}
 include ':app'
 includeBuild("./Plugin")
 buildscript {
@@ -7,7 +21,7 @@ buildscript {
 
     }
     dependencies {
-    //    classpath "com.kronos.plugin:plugin-repo:0.1.7"
+        //    classpath "com.kronos.plugin:plugin-repo:0.1.7"
     }
 }
 
