@@ -8,6 +8,16 @@ repo插件同时项目会自动帮各位去同步远端的仓库代码，如果�
 
 dep插件则是负责将项目内的依赖版本更换成远端版本，同时进行version版本号策略清洗。
 
+version 拿来做的是plugin的dep操作，因为考虑到多仓工程全局配置，所以尝试性的做了些黑科技
+
+##
+
+demo 因为很多都是settings插件，所以需要clone完工程之后将几个plugin推送到mavenLocal，之后在外层的settings直接引入对应插件。
+
+当前貌似没有找到settings插件的当场调试模式。
+
+全局插件采用了生成initscript，之后用文件的形式添加到`startParameter`中去，在第一个settings插件之后影响到所有includebuild工程。
+
 ## 使用简介
 
 1. 打开项目的`settings.gradle`，记住是settings.gradle不是build.gradle
@@ -16,17 +26,19 @@ dep插件则是负责将项目内的依赖版本更换成远端版本，同时�
 ~~~
 buildscript {
     repositories {
-        maven {
-            url 'https://dl.bintray.com/leifzhang/maven'
-        }
+        mavenLocal()
+        maven { setUrl("https://maven.aliyun.com/repository/central/") }
+
     }
     dependencies {
-        classpath "com.kronos.plugin:plugin-repo:0.1.7"
+        // 本地先尝试下 maven local 任务之后添加
+        //  classpath "com.kronos.plugin:plugin-repo:0.2.0"
+        //   classpath "com.kronos.plugin:plugin-version:0.2.0"
     }
 }
-
-
-apply plugin: 'repo-setting'
+// 本地先尝试下 maven local 任务之后添加
+//apply plugin: "kronos.plugins"
+//apply plugin: 'kronos.settings'
 ~~~
 3. 项目根目录下添加repo.xml
 
