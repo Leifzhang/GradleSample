@@ -84,7 +84,7 @@ Gradle依赖替换,在项目开发过程中，不可避免的需要引入一些�
 
 ### 科学建议 
 
-个人建议每个模块都根据自己的group设置好group，以及模块名，一定要和aar版本一直，这样就可以充分的利用gradle本身的特性，如果当前module存在，就会自动完成aar切换到源码的操作.
+个人建议每个模块都根据自己的group设置好group，以及模块名，一定要和aar版本一致，这样就可以充分的利用gradle本身的特性，如果当前module存在，就会自动完成aar切换到源码的操作.
 
 然后依赖方式都使用implementation group:module:version 这样就会自动完成源码和aar的切换。
 
