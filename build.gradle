@@ -8,8 +8,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath plugin.agpPlugin
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -17,6 +16,7 @@ buildscript {
 }
 plugins {
     id("kronos.dependencies") apply(false)
+    id("kronos.library") apply(false)
     id 'org.jetbrains.kotlin.jvm' version '1.6.10-RC' apply false
 }
 
@@ -27,6 +27,7 @@ allprojects {
         google()
     }
 }
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir

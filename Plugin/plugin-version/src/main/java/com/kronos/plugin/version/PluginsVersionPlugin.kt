@@ -18,6 +18,14 @@ class PluginsVersionPlugin : Plugin<Settings> {
             IncludeBuildInsertScript().execute(target, it)
         }
         target.gradle.plugins.apply(PluginVersionGradlePlugin::class.java)
+        target.dependencyResolutionManagement.versionCatalogs {
+            register("support") {
+                alias("coreKtx").to("androidx.core:core-ktx:1.3.2")
+            }
+            register("plugin"){
+                alias("agpPlugin").to("com.android.tools.build:gradle:7.1.1")
+            }
+        }
     }
 
 
