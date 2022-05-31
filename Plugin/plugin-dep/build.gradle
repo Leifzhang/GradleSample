@@ -12,11 +12,10 @@ dependencies {
     implementation localGroovy()
     implementation 'org.yaml:snakeyaml:1.26'
 }
-
-compileKotlin.sourceCompatibility = JavaVersion.VERSION_1_8
-compileKotlin.targetCompatibility = JavaVersion.VERSION_1_8
-compileKotlin.kotlinOptions.jvmTarget = "1.8"
-
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 gradlePlugin {
     plugins {
         dependenciesPlugin {

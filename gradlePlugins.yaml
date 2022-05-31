@@ -1,0 +1,4 @@
+plugins:
+  - pluginId: kronos.settings
+    pluginMavenUrl: com.kronos.plugin:plugin-dep:0.2.0
+  - pluginId:

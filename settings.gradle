@@ -20,12 +20,16 @@ buildscript {
     }
     dependencies {
         // 本地先尝试下 maven local 任务之后添加
-        //  classpath "com.kronos.plugin:plugin-repo:0.2.0"
-        //   classpath "com.kronos.plugin:plugin-version:0.2.0"
+        // classpath "com.kronos.plugin:plugin-repo:0.2.0"
+        classpath "com.kronos.plugin:plugin-version:0.2.0"
     }
 }
+plugins {
+    id("kronos.monitor") version("0.2.1")
+}
 // 本地先尝试下 maven local 任务之后添加
-//apply plugin: "kronos.plugins"
+apply plugin: "kronos.plugins"
+
 
 include ':app'
 includeBuild("./Plugin")

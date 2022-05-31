@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="1.8">
+    <bytecodeTargetLevel target="11">
       <module name="plugin-repo" target="1.7" />
+      <module name="Plugin.plugin-dep" target="1.8" />
+      <module name="Plugin.plugin-dep.main" target="1.8" />
+      <module name="Plugin.plugin-dep.test" target="1.8" />
+      <module name="Plugin.plugin-monitor" target="1.8" />
+      <module name="Plugin.plugin-monitor.main" target="1.8" />
+      <module name="Plugin.plugin-monitor.test" target="1.8" />
+      <module name="Plugin.plugin-repo" target="1.8" />
+      <module name="Plugin.plugin-repo.main" target="1.8" />
+      <module name="Plugin.plugin-repo.test" target="1.8" />
+      <module name="Plugin.plugin-version" target="1.8" />
+      <module name="Plugin.plugin-version.main" target="1.8" />
+      <module name="Plugin.plugin-version.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

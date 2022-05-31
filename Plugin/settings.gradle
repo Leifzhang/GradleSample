@@ -13,3 +13,4 @@ include ':plugin-repo'
 include ':plugin-dep'
 include ':plugin-version'
 rootProject.name = "Plugin"
+include ':plugin-monitor'
