@@ -1,11 +1,9 @@
 package com.kronos.plugin.monitor.scan
 
-import com.kronos.plugin.monitor.repo.DataRep
 import com.kronos.plugin.monitor.repo.ReportTypeFile
 import com.kronos.plugin.monitor.repo.data.DaemonWork
-import org.gradle.api.invocation.Gradle
+import com.kronos.plugin.monitor.repo.getLog
 import org.gradle.internal.operations.notify.BuildOperationFinishedNotification
-import org.gradle.internal.operations.notify.BuildOperationNotificationListener
 import org.gradle.internal.operations.notify.BuildOperationProgressNotification
 import org.gradle.internal.operations.notify.BuildOperationStartedNotification
 import org.gradle.workers.internal.ExecuteWorkItemBuildOperationType
@@ -17,11 +15,15 @@ import org.gradle.workers.internal.ExecuteWorkItemBuildOperationType
  *  @Since 2022/5/30
  *
  */
-class ProcessScanner(private val gradle: Gradle) : BuildOperationNotificationListener {
+class ProcessScanner : BaseOperationNotificationListener {
 
-    private val log = DataRep.getRep().getLogFile(ReportTypeFile.PROCESS_LOG)
+    private val log = ReportTypeFile.PROCESS_LOG.getLog()
     private val list: ArrayList<ExecuteWorkItemBuildOperationType.Details> = ArrayList()
     private val map: HashMap<ExecuteWorkItemBuildOperationType.Details, DaemonWork> = HashMap()
+
+    override fun buildFinish() {
+        log.finish()
+    }
 
     override fun started(notification: BuildOperationStartedNotification) {
         if (notification.notificationOperationDetails is ExecuteWorkItemBuildOperationType.Details) {

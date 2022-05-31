@@ -1,11 +1,10 @@
 package com.kronos.plugin.monitor.scan
 
-import com.kronos.plugin.monitor.repo.DataRep
 import com.kronos.plugin.monitor.repo.LogFile
 import com.kronos.plugin.monitor.repo.ReportTypeFile
+import com.kronos.plugin.monitor.repo.getLog
 import com.kronos.plugin.monitor.scan.cmd.CmdCollege
 import com.kronos.plugin.monitor.scan.cmd.CmdPrinter
-import com.kronos.plugin.monitor.utils.Logger
 import com.kronos.plugin.monitor.utils.TimeUtils
 import org.gradle.api.internal.tasks.execution.ExecuteTaskBuildOperationDetails
 import org.gradle.api.internal.tasks.execution.ExecuteTaskBuildOperationType
@@ -15,10 +14,8 @@ import org.gradle.internal.logging.events.LogEvent
 import org.gradle.internal.logging.events.ProgressStartEvent
 import org.gradle.internal.logging.events.StyledTextOutputEvent
 import org.gradle.internal.operations.notify.BuildOperationFinishedNotification
-import org.gradle.internal.operations.notify.BuildOperationNotificationListener
 import org.gradle.internal.operations.notify.BuildOperationProgressNotification
 import org.gradle.internal.operations.notify.BuildOperationStartedNotification
-import java.util.function.Consumer
 
 /**
  *
@@ -26,14 +23,18 @@ import java.util.function.Consumer
  *  @Since 2022/5/30
  *
  */
-class LogScanner(gradle: Gradle) : BuildOperationNotificationListener {
+class LogScanner(gradle: Gradle) : BaseOperationNotificationListener {
 
-    var log: LogFile = DataRep.getRep().getLogFile(ReportTypeFile.CONSOLE_LOG)
+    private val log: LogFile = ReportTypeFile.CONSOLE_LOG.getLog()
     var map = HashMap<Any, BuildOperationStartedNotification>()
 
     init {
         val cmd = CmdCollege().execute(gradle)
         CmdPrinter(log).execute(cmd)
+    }
+
+    override fun buildFinish() {
+        log.finish()
     }
 
     override fun started(notification: BuildOperationStartedNotification) {
@@ -42,7 +43,7 @@ class LogScanner(gradle: Gradle) : BuildOperationNotificationListener {
     }
 
     override fun progress(notification: BuildOperationProgressNotification) {
-        val sb = StringBuilder("")
+        val sb = StringBuilder()
         if (notification.notificationOperationProgressDetails is LogEvent) {
             val d: LogEvent = notification.notificationOperationProgressDetails as LogEvent
             sb.append(d.message).append("\n")
@@ -50,7 +51,7 @@ class LogScanner(gradle: Gradle) : BuildOperationNotificationListener {
             val d: StyledTextOutputEvent =
                 notification.notificationOperationProgressDetails as StyledTextOutputEvent
             d.spans.forEach {
-                sb.append(it.text)
+                sb.append(it.text).append("\n")
             }
         } else if (notification.notificationOperationProgressDetails is ProgressStartEvent) {
             val d: ProgressStartEvent =
@@ -58,7 +59,8 @@ class LogScanner(gradle: Gradle) : BuildOperationNotificationListener {
         } else if (notification.notificationOperationProgressDetails is DefaultDeprecatedUsageProgressDetails) {
 
         } else {
-            log.append("未知 notification $notification")
+            log.append("未知 notification ${notification.notificationOperationProgressDetails.javaClass.name}")
+                .append("\n")
         }
         log.append(sb.toString())
     }
@@ -72,7 +74,7 @@ class LogScanner(gradle: Gradle) : BuildOperationNotificationListener {
                     notification.notificationOperationResult as ExecuteTaskBuildOperationType.Result
                 val get = map[notification.notificationOperationId]
                 val stringBuffer = StringBuffer()
-                stringBuffer.append("Task \${d.taskPath}: " + d.task.state.outcome.toString() + " ")
+                stringBuffer.append("Task ${d.taskPath}: " + d.task.state.outcome.toString() + " ")
                 if (get != null) {
                     val exTime =
                         notification.notificationOperationFinishedTimestamp - get.notificationOperationStartedTimestamp
@@ -85,7 +87,7 @@ class LogScanner(gradle: Gradle) : BuildOperationNotificationListener {
                         stringBuffer.append(cachingDis)
                         stringBuffer.append("\n")
                     }
-                    if (result.upToDateMessages != null && !result.upToDateMessages!!.isEmpty()) {
+                    if (result.upToDateMessages != null && result.upToDateMessages!!.isNotEmpty()) {
                         stringBuffer.append("disable up to date:")
                         stringBuffer.append("\n")
                         result.upToDateMessages?.forEach {
@@ -94,7 +96,6 @@ class LogScanner(gradle: Gradle) : BuildOperationNotificationListener {
                         }
                         stringBuffer.append("\n")
                     }
-
                     if (result.originExecutionTime != null) {
                         val orExTime = result.originExecutionTime!!
                         if (exTime > orExTime) {

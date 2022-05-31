@@ -27,7 +27,7 @@ class KronosMonitor {
             val registrar =
                 target.gradle.services.get(BuildOperationNotificationListenerRegistrar::class.java)
             registrar.register(
-                MonitorBuildOperationNotificationListener(target, target.gradle)
+                MonitorBuildOperationNotificationListener(target.gradle)
             )
         }
         BuildResultMonitor().setup(target)

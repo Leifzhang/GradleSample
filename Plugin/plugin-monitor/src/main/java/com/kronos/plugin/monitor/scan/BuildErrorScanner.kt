@@ -23,7 +23,7 @@ import org.gradle.internal.operations.notify.BuildOperationStartedNotification
  *  @Since 2022/5/30
  *
  */
-class BuildErrorScanner : BuildOperationNotificationListener {
+class BuildErrorScanner : BaseOperationNotificationListener {
 
     private val log = DataRep.getRep().getLogFile(ReportTypeFile.BUILD_REPORT)
 
@@ -31,6 +31,10 @@ class BuildErrorScanner : BuildOperationNotificationListener {
     private val logAnalyse: LogErrorAnalyse = LogErrorAnalyse(errorReport)
     private val styleLogErrorAnalyse: StyleLogErrorAnalyse = StyleLogErrorAnalyse(errorReport)
     private var startId: Long = -1L
+
+    override fun buildFinish() {
+        log.finish()
+    }
 
     override fun started(notification: BuildOperationStartedNotification) {
         if (startId == -1L) {
@@ -74,7 +78,6 @@ class BuildErrorScanner : BuildOperationNotificationListener {
                     }
                 }
             }
-
         }
     }
 }

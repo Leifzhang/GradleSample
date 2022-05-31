@@ -12,10 +12,9 @@ dependencies {
     implementation localGroovy()
     implementation 'org.yaml:snakeyaml:1.26'
 }
-
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 gradlePlugin {
     plugins {

@@ -1,10 +1,8 @@
 package com.kronos.plugin.monitor.scan
 
 import com.kronos.plugin.monitor.repo.DataRep
+import com.kronos.plugin.monitor.repo.ReportTypeFile
 import com.kronos.plugin.monitor.utils.FileUtils
-import com.kronos.plugin.monitor.utils.Logger
-import org.gradle.api.execution.TaskExecutionGraph
-import org.gradle.api.execution.TaskExecutionGraphListener
 import org.gradle.api.internal.GradleInternal
 import org.gradle.api.internal.tasks.execution.ExecuteTaskBuildOperationDetails
 import org.gradle.api.invocation.Gradle
@@ -16,13 +14,14 @@ import org.gradle.internal.operations.notify.BuildOperationProgressNotification
 import org.gradle.internal.operations.notify.BuildOperationStartedNotification
 import java.io.File
 
+
 /**
  *
  *  @Author LiABao
  *  @Since 2022/5/30
  *
  */
-class ReportScanner(private val gradle: Gradle) : BuildOperationNotificationListener {
+class ReportScanner(gradle: Gradle) : BaseOperationNotificationListener {
 
     var startId: Long = -1
     var buildResult: Int = 1
@@ -62,6 +61,10 @@ class ReportScanner(private val gradle: Gradle) : BuildOperationNotificationList
 
     fun isIdea(gradle: Gradle): Boolean {
         return gradle.startParameter.systemPropertiesArgs.containsKey("idea.version")
+    }
+
+    override fun buildFinish() {
+
     }
 
     override fun started(notification: BuildOperationStartedNotification) {
@@ -105,10 +108,14 @@ class ReportScanner(private val gradle: Gradle) : BuildOperationNotificationList
                 if (file.exists()) {
                     file.listFiles().forEach {
                         val file1 =
-                            File(DataRep.getRep().getDir(), "task" + File.separator + it.getName())
+                            File(DataRep.getRep().getDir(), "task" + File.separator + it.name)
+                        if (file1.parentFile.exists()) {
+                            file1.parentFile.mkdirs();
+                        }
+                        it.copyTo(file1)
                     }
-
                 }
+                val logFile = DataRep.getRep().getLogFile(ReportTypeFile.BUILD_LOG)
             }
         }
 

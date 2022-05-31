@@ -9,21 +9,22 @@ class LogFile internal constructor(
     private var finish = false
     private var start = false
 
-    fun setup() {
+    private fun setup() {
         if (!file.parentFile.exists()) {
             file.parentFile.mkdirs()
         }
     }
 
-    fun append(txt: String?) {
+    fun append(txt: String?): LogFile {
         if (finish) {
-            return
+            return this
         }
         if (!start) {
+            file.appendText(reportTypeFile.type.start(reportTypeFile.title) + "\n")
             start = true
-            file.writeText(reportTypeFile.type.start(reportTypeFile.title))
         }
-        txt?.let { file.writeText(it) }
+        txt?.let { file.appendText(it) }
+        return this
     }
 
     fun hasContent(): Boolean {
@@ -34,11 +35,17 @@ class LogFile internal constructor(
         if (finish) {
             return
         }
-        append(reportTypeFile.type.end())
+        if (start) {
+            file.appendText("\n" + reportTypeFile.type.end())
+        }
         finish = true
     }
 
     init {
         setup()
     }
+}
+
+fun ReportTypeFile.getLog(): LogFile {
+    return DataRep.getRep().getLogFile(this)
 }

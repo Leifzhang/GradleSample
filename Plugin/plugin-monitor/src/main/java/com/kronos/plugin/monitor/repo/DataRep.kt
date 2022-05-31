@@ -37,7 +37,7 @@ class DataRep {
         }
 
 
-        fun fawkesBuildData(root: Gradle): String {
+        private fun fawkesBuildData(root: Gradle): String {
             return root.gradleUserHomeDir.canonicalPath + File.separator + "local_build_scan" + File.separator + "v1"
         }
 
@@ -70,7 +70,7 @@ class DataRep {
 
 
     fun getFile(reportTypeFile: ReportTypeFile): File {
-        return File(getDir(), reportTypeFile.fileName);
+        return File(getDir(), reportTypeFile.realFileName())
     }
 
     fun getLogFile(reportTypeFile: ReportTypeFile): LogFile {
@@ -98,7 +98,10 @@ enum class ReportTypeFile(val fileName: String, val title: String, val type: Typ
     INFRASTRUCTURE("infrastructure", "编译环境信息", Html()),
     BUILD_ERR("build_err", "编译错误堆栈", Html()),
     BUILD_REPORT("error_log", "编译错误分析", Html()),
-    DEPENDS_INFO("depend_info", "组件信息", Html());
+}
+
+fun ReportTypeFile.realFileName(): String {
+    return fileName + "." + type.type()
 }
 
 class Html : Type {
