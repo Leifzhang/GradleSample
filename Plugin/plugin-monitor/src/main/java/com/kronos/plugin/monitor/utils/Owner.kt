@@ -115,7 +115,7 @@ class JavaEnvUserNameProvider : Provider {
 }
 
 
-class HostnameProvider() : Provider {
+class HostnameProvider : Provider {
     override fun get(): String? {
         try {
             val st = executeForOutput("hostname", FileUtils.rootFile).trim { it <= ' ' }

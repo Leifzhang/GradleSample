@@ -5,6 +5,7 @@ import com.kronos.plugin.monitor.scan.MonitorBuildOperationNotificationListener
 import com.kronos.plugin.monitor.utils.FileUtils
 import com.kronos.plugin.monitor.utils.OwnerProvider
 import com.kronos.plugin.monitor.utils.UuidFinder
+import com.kronos.plugin.monitor.utils.extra
 import org.gradle.api.initialization.Settings
 import org.gradle.initialization.DefaultSettings
 import org.gradle.internal.operations.notify.BuildOperationNotificationListenerRegistrar
@@ -35,7 +36,21 @@ class KronosMonitor {
 }
 
 fun get(settings: Settings): UuidFinder {
-    // val gradle = settings.gradle
+    val gradle = settings.gradle
+    val extra = gradle.extra()
+    if (extra != null) {
+        return if (extra.has("uuidfinder")) {
+            extra["uuidfinder"] as UuidFinder
+        } else {
+            val owner = getOwnerFrom()
+            val tmp = Date()
+            val dateStr = SimpleDateFormat("yy_MM_dd").format(tmp)
+            val timeStr = SimpleDateFormat("HH_mm_ss").format(tmp)
+            val finder = UuidFinder(settings.gradle, owner, dateStr, timeStr)
+            extra.set("uuidfinder", finder)
+            return finder
+        }
+    }
     return if (settings.extra.has("uuidfinder")) {
         settings.extra["uuidfinder"] as UuidFinder
     } else {

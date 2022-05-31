@@ -6,7 +6,7 @@ import com.kronos.plugin.monitor.scan.analyse.task.issue.JavaBuilderErrorAnalyse
 import com.kronos.plugin.monitor.scan.analyse.task.issue.KotlinBuilderErrorAnalyse
 import java.io.IOException
 
-class StyleLogErrorAnalyse(report: ErrorReport?) {
+class StyleLogErrorAnalyse(report: ErrorReport) {
 
     private val issueMatches: MutableList<IssueMatch> = ArrayList()
     var issueMatch: IssueMatch? = null
