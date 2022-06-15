@@ -39,6 +39,7 @@ class MonitorBuildOperationNotificationListener(
             list.add(InfoScanner(gradle))
             list.add(BuildErrorScanner(gradle))
             list.add(ProcessScanner())
+            list.add(BuildTaskScanner(gradle))
             list.add(ReportScanner(gradle))
             gradle.addBuildListener(object : BuildAdapter() {
 

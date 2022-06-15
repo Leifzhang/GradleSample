@@ -32,6 +32,7 @@ class KronosMonitor {
             )
         }
         BuildResultMonitor().setup(target)
+        target.gradle.startParameter.systemPropertiesArgs
     }
 }
 
