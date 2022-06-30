@@ -18,11 +18,12 @@ data class TaskBuildData(
             text += "style=\"color:red\""
         }
         text += ">"
-        text += " $taskName  ${taskState.outcome.toString()} "
-        text += " ${TimeUtils.toDec(costa)}"
+        text += "    $taskName  ${taskState.outcome.toString()} "
         if (isWarning()) {
             text += " -----fbi warning----- "
         }
+        text += " ${TimeUtils.toDec(costa)}"
+
         text += "</p>"
         return text
     }

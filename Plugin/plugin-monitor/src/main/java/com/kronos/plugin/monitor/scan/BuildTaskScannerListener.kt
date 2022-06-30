@@ -27,7 +27,7 @@ class BuildTaskScannerListener(
 
     var map = HashMap<Any, BuildOperationStartedNotification>()
     private val values = Collections.synchronizedMap(linkedMapOf<String, ModuleTasksData>())
-    val topK = PriorityQueue<ModuleTasksData>(K)
+    val topK = PriorityQueue<ModuleTasksData>()
 
     init {
         gradle.addBuildListener(object : BuildAdapter() {
@@ -35,7 +35,15 @@ class BuildTaskScannerListener(
                 super.buildFinished(result)
                 values.forEach {
                     invoker.invoke(it.value)
-                    topK.offer(it.value)
+                    if (topK.size < K) {
+                        topK.add(it.value)
+                    } else {
+                        val min = topK.peek()
+                        if (it.value.totalCosta > min.totalCosta) {
+                            topK.poll()
+                            topK.offer(it.value)
+                        }
+                    }
                 }
                 finishListener.invoke(this@BuildTaskScannerListener)
             }
@@ -53,6 +61,7 @@ class BuildTaskScannerListener(
     }
 
     override fun finished(notification: BuildOperationFinishedNotification) {
+
         if (notification.notificationOperationDetails is ExecuteTaskBuildOperationDetails) {
             try {
                 val d: ExecuteTaskBuildOperationDetails =

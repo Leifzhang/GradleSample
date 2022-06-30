@@ -23,7 +23,8 @@ class BuildTaskScanner(gradle: Gradle) : BaseOperationNotificationListener {
         }, {
             log.append("\r\n\r\n\r\n")
             log.append("Top 3 Project:")
-            this.topK.forEach {
+            for (index in 0 until topK.size) {
+                val it = topK.poll()
                 log.append(it.log(false))
             }
         })
