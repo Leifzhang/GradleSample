@@ -8,7 +8,7 @@ import com.kronos.plugin.monitor.scan.analyse.task.issue.CnJavaBuilderErrorAnaly
 import java.io.IOException
 import java.util.ArrayList
 
-class LogErrorAnalyse(report: ErrorReport?) {
+class LogErrorAnalyse(report: ErrorReport) {
 
     private val issueMatches: MutableList<IssueMatch> = ArrayList()
     fun analyse(category: String?, message: String) {

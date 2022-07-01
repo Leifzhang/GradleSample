@@ -5,6 +5,7 @@ import com.kronos.plugin.monitor.repo.ReportTypeFile
 import com.kronos.plugin.monitor.scan.analyse.ErrorReport
 import com.kronos.plugin.monitor.scan.analyse.LogErrorAnalyse
 import com.kronos.plugin.monitor.scan.analyse.StyleLogErrorAnalyse
+import com.kronos.plugin.monitor.scan.analyse.TaskBuildErrorAnalyse
 import com.kronos.plugin.monitor.scan.analyse.task.IssueDevFindTask
 import org.gradle.api.invocation.Gradle
 import org.gradle.api.logging.LogLevel
@@ -12,7 +13,6 @@ import org.gradle.internal.logging.events.LogEvent
 import org.gradle.internal.logging.events.StyledTextOutputEvent
 import org.gradle.internal.operations.OperationIdentifier
 import org.gradle.internal.operations.notify.BuildOperationFinishedNotification
-import org.gradle.internal.operations.notify.BuildOperationNotificationListener
 import org.gradle.internal.operations.notify.BuildOperationProgressNotification
 import org.gradle.internal.operations.notify.BuildOperationStartedNotification
 
@@ -23,7 +23,7 @@ import org.gradle.internal.operations.notify.BuildOperationStartedNotification
  *  @Since 2022/5/30
  *
  */
-class BuildErrorScanner : BaseOperationNotificationListener {
+class BuildErrorScanner(gradle: Gradle) : BaseOperationNotificationListener {
 
     private val log = DataRep.getRep().getLogFile(ReportTypeFile.BUILD_REPORT)
 
@@ -31,6 +31,7 @@ class BuildErrorScanner : BaseOperationNotificationListener {
     private val logAnalyse: LogErrorAnalyse = LogErrorAnalyse(errorReport)
     private val styleLogErrorAnalyse: StyleLogErrorAnalyse = StyleLogErrorAnalyse(errorReport)
     private var startId: Long = -1L
+    var taskBuildErrorAnalyse = TaskBuildErrorAnalyse(gradle, errorReport)
 
     override fun buildFinish() {
         log.finish()

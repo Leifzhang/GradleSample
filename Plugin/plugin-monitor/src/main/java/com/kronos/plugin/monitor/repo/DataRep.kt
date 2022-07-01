@@ -98,6 +98,7 @@ enum class ReportTypeFile(val fileName: String, val title: String, val type: Typ
     INFRASTRUCTURE("infrastructure", "编译环境信息", Html()),
     BUILD_ERR("build_err", "编译错误堆栈", Html()),
     BUILD_REPORT("error_log", "编译错误分析", Html()),
+    BUILD_TASK_COSTA("build_task", "任务耗时", Html())
 }
 
 fun ReportTypeFile.realFileName(): String {

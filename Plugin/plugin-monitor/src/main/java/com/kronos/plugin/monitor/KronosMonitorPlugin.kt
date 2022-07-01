@@ -7,5 +7,6 @@ class KronosMonitorPlugin : Plugin<Settings> {
 
     override fun apply(target: Settings) {
         KronosMonitor().setup(target)
+        target.gradle.startParameter.projectProperties= emptyMap()
     }
 }
