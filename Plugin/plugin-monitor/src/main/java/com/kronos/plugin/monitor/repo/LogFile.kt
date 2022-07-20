@@ -3,7 +3,7 @@ package com.kronos.plugin.monitor.repo
 import java.io.File
 
 class LogFile internal constructor(
-    private val file: File,
+    val file: File,
     private val reportTypeFile: ReportTypeFile
 ) {
     private var finish = false
