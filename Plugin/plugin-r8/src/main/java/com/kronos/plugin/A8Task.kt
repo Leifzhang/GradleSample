@@ -159,9 +159,6 @@ abstract class A8Task : DefaultTask() {
                 sb.append("\t模块名：${it.key}, 相对路径: ${it.value}\n")
             }
             sb.append("\n\n")
-            sb.append("如果是仓内有权限模块报错，可根据报错切到对应模块，解决掉报错或者修改 maven.yaml 下 dummy 字段（该字段仅用于生成模块下的 commit）然后进行提交，再 push 到远端促使该模块进行重编\n")
-            sb.append("对于无权限或三方组件，可通过升级根目录下 build_version.txt 对应业务的 build_version，触发全部重编，一次重编大概 30min+，如非必要请勿更新\n")
-            sb.append("A8 报错可先参照 https://info.bilibili.co/x/qwpHC 解决，如有疑问联系 @xiaolingtong(xiaolingtong@bilibili.com)\n")
             sb.append("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n")
             val s = sb.toString()
             errorMsg.append(s)
