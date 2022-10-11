@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: "kronos.library"
+apply plugin: "kronos.a8"
 
 android {
     compileSdkVersion 28
@@ -28,7 +29,7 @@ dependencies {
     logger.lifecycle("aaa:" + aaa)
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation support.coreKtx
+//    implementation support.coreKtx
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'

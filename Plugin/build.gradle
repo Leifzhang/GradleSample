@@ -12,6 +12,10 @@ plugins {
 allprojects {
     repositories {
         maven { setUrl("https://maven.aliyun.com/repository/central/") }
+        maven {
+            setUrl("https://storage.googleapis.com/r8-releases/raw")
+        }
+
         google()
     }
     group = "com.kronos.plugin"

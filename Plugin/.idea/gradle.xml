@@ -13,6 +13,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/plugin-dep" />
+            <option value="$PROJECT_DIR$/plugin-monitor" />
+            <option value="$PROJECT_DIR$/plugin-r8" />
             <option value="$PROJECT_DIR$/plugin-repo" />
             <option value="$PROJECT_DIR$/plugin-version" />
           </set>

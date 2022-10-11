@@ -13,6 +13,7 @@ import org.gradle.api.initialization.Settings
 class RepoSettingsPlugin : Plugin<Settings> {
 
     override fun apply(settings: Settings) {
+        settings.gradle.gradleHomeDir
         settings.gradle.addProjectEvaluationListener(object : ProjectEvaluationListener {
             override fun beforeEvaluate(project: Project) {
                 project.configurations.all {
