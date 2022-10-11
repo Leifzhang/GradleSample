@@ -2,7 +2,9 @@ package com.kronos.plugin
 
 import com.android.build.api.variant.BuiltArtifactsLoader
 import com.android.tools.r8.A8
+import com.android.tools.r8.A8Command
 import com.android.tools.r8.Diagnostic
+import com.android.tools.r8.DiagnosticsHandler
 import com.android.tools.r8.utils.DexResourceProvider
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
@@ -44,8 +46,9 @@ abstract class A8Task : DefaultTask() {
 
 
     private fun a8Check(apk: File) {
-        val A8_ERROR_PATTERN = "(?:.*from \\\\S* ([^( ]*)\\\\.)|(?:.*from ([^( ]*)\\\\Z)"
-        val pattern = Pattern.compile(A8_ERROR_PATTERN)
+        logger.lifecycle("开始 Dex Api 检查 " + time())
+        val a8ErrorPattern = "(?:.*from \\\\S* ([^( ]*)\\\\.)|(?:.*from ([^( ]*)\\\\Z)"
+        val pattern = Pattern.compile(a8ErrorPattern)
         val set = HashSet<String>()
         val fileNames = HashSet<String>()
         val a8Ignore = System.getenv().containsKey("A8_ERROR_IGNORE")
@@ -53,11 +56,10 @@ abstract class A8Task : DefaultTask() {
         val error_msg = StringBuilder()
         try {
             error_msg.append("快编二进制检查错误信息如下：\n")
-            val builder = com.android.tools.r8.A8Command.builder(object :
-                com.android.tools.r8.DiagnosticsHandler {
+            val builder = A8Command.builder(object : DiagnosticsHandler {
                 override fun error(error: Diagnostic?) {
                     super.error(error)
-                    System.err.println("Error : " + error?.getDiagnosticMessage())
+                    logger.error("Error : " + error?.diagnosticMessage)
                     val matcher = pattern.matcher(error?.diagnosticMessage?.trim())
                     if (matcher.find()) {
                         val groupOne = matcher.group(1)
@@ -88,88 +90,83 @@ abstract class A8Task : DefaultTask() {
             e.printStackTrace()
         }
         if (errorCount > 0) {
-            System.out.println("存在 ${errorCount} 个异常。请查看上面信息。")
-            /*  System.out.println(
-                  "结束 Dex Api 检查 " + new Date ().format(
-                      "yyyy/MM-dd/HH:mm:ss"
-                  )
-              )*/
+            logger.error("存在 $errorCount 个异常。请查看上面信息。")
+            logger.error("结束 Dex Api 检查 " + time())
             if (a8Ignore) {
-                System.out.println("生成的APK存在问题")
+                logger.error("生成的APK存在问题")
             } else {
                 val error_file = File("build/a8_error_msg.txt")
                 if (error_file.exists()) {
                     error_file.delete()
                 }
-                /* val moduleInfo = backtrackModule(set, fileNames, error_msg, it.project)
-                 val printWriter = error_file.newPrintWriter()
-                 printWriter.write(error_msg.toString())
-                 printWriter.flush()
-                 printWriter.close()
-                 if (error_file.exists()) {
-                     println("a8_error_msg.txt生成成功")
-                 }
-                 throw  RuntimeException(
-                     "API 检查失败。 存在 ${errorCount} 个异常。检查代码问题。\n" + moduleInfo + "忽略规则定义在 a8 配置文件：./.buildscripts/a8_ruls.txt"
-                 )*/
+                val moduleInfo = backtrackModule(set, fileNames, error_msg, project) ?: return
+                error_file.appendText(error_msg.toString())
+                if (error_file.exists()) {
+                    println("a8_error_msg.txt生成成功")
+                }
+                throw  RuntimeException(
+                    "API 检查失败。 存在 $errorCount 个异常。检查代码问题。\n" + moduleInfo + "忽略规则定义在 a8 配置文件：./.buildscripts/a8_ruls.txt"
+                )
             }
         } else {
-
+            logger.error("结束 Dex Api 检查 " + time())
         }
-
     }
 
 
-    fun backtrackModule(
+    private fun backtrackModule(
         path: Set<String>,
         fileNames: Set<String>,
         errorMsg: StringBuilder,
         project: Project
     ): String? {
         val moduleNames = HashMap<String, String>()
-        //  project.rootDir
-        /*  project.rootDir.eachFileRecurse(groovy.io.FileType.FILES) {
-              if (it.absolutePath != it.canonicalPath) return
-              if (!it.name.contains(".") || !fileNames.contains(it.name.split("\\.")[0])) return
-              def canonicalPath = it . canonicalPath def srcIndex = canonicalPath . indexOf ("src")
-              if (srcIndex < 0) return
-              def firstSlashIndexAfterSrcIndex = canonicalPath . indexOf ("/", srcIndex+4)+1
-              def packagePath = canonicalPath . substring (canonicalPath.indexOf(
-                  "/",
-                  firstSlashIndexAfterSrcIndex
-              ) + 1)
-              canonicalPath = packagePath.split("\\.")[0].replaceAll('/', '.')
-              if (!path.contains(canonicalPath)) return
-              String[] components = it . canonicalPath . split ('/')
-              def srcComponentIndex = - 1
-              for (int i = 0; i < components.length; i++) {
-              if ("src" == components[i]) {
-                  srcComponentIndex = i
-              }
-          }
-              if (srcComponentIndex > 0) {
-                  def moduleName = components [srcComponentIndex - 1]
-                  def suffixPart = it . canonicalPath . substring (srcIndex)
-                  def prefixPart = project . rootDir . canonicalPath +"/"
-                  moduleNames[moduleName] = it.canonicalPath - suffixPart - prefixPart
-              }
-          }
-          if (!moduleNames.isEmpty()) {
-              def sb = new StringBuffer("\n\n--------------------------------------------------------------------------------\n")
-              def head = "A8 报错涉及下述模块：\n"
-              sb.append(head)
-              moduleNames.each {
-                  sb.append("\t模块名：${it.key}, 相对路径: ${it.value}\n")
-              }
-              sb.append("\n\n")
-              sb.append("如果是仓内有权限模块报错，可根据报错切到对应模块，解决掉报错或者修改 maven.yaml 下 dummy 字段（该字段仅用于生成模块下的 commit）然后进行提交，再 push 到远端促使该模块进行重编\n")
-              sb.append("对于无权限或三方组件，可通过升级根目录下 build_version.txt 对应业务的 build_version，触发全部重编，一次重编大概 30min+，如非必要请勿更新\n")
-              sb.append("A8 报错可先参照 https://info.bilibili.co/x/qwpHC 解决，如有疑问联系 @xiaolingtong(xiaolingtong@bilibili.com)\n")
-              sb.append("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n")
-              def s = sb . toString ()
-              errorMsg.append(s)
-              return s
-          }*/
+        project.rootDir.walkTopDown().forEach {
+            if (it.absolutePath != it.canonicalPath) return null
+            if (!it.name.contains(".") || !fileNames.contains(it.name.split("\\.")[0])) return null
+            var canonicalPath = it.canonicalPath
+            val srcIndex = canonicalPath.indexOf("src")
+            if (srcIndex < 0) return null
+            val firstSlashIndexAfterSrcIndex = canonicalPath.indexOf("/", srcIndex + 4) + 1
+            val packagePath = canonicalPath.substring(
+                canonicalPath.indexOf(
+                    "/",
+                    firstSlashIndexAfterSrcIndex
+                ) + 1
+            )
+            canonicalPath = packagePath.split("\\.")[0].replace('/', '.')
+            if (!path.contains(canonicalPath)) return null
+            val components = it.canonicalPath.split('/')
+            var srcComponentIndex = -1
+            components.forEach {
+                if ("src" == it) {
+                    srcComponentIndex = components.indexOf(it)
+                }
+            }
+            if (srcComponentIndex > 0) {
+                val moduleName = components[srcComponentIndex - 1]
+                val suffixPart = it.canonicalPath.substring(srcIndex)
+                val prefixPart = project.rootDir.canonicalPath + "/"
+                //moduleNames[moduleName] = (it.canonicalPath - suffixPart) - prefixPart
+            }
+        }
+        if (moduleNames.isNotEmpty()) {
+            val sb =
+                StringBuffer("\n\n--------------------------------------------------------------------------------\n")
+            val head = "A8 报错涉及下述模块：\n"
+            sb.append(head)
+            moduleNames.forEach {
+                sb.append("\t模块名：${it.key}, 相对路径: ${it.value}\n")
+            }
+            sb.append("\n\n")
+            sb.append("如果是仓内有权限模块报错，可根据报错切到对应模块，解决掉报错或者修改 maven.yaml 下 dummy 字段（该字段仅用于生成模块下的 commit）然后进行提交，再 push 到远端促使该模块进行重编\n")
+            sb.append("对于无权限或三方组件，可通过升级根目录下 build_version.txt 对应业务的 build_version，触发全部重编，一次重编大概 30min+，如非必要请勿更新\n")
+            sb.append("A8 报错可先参照 https://info.bilibili.co/x/qwpHC 解决，如有疑问联系 @xiaolingtong(xiaolingtong@bilibili.com)\n")
+            sb.append("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n")
+            val s = sb.toString()
+            errorMsg.append(s)
+            return s
+        }
         return null
     }
 }

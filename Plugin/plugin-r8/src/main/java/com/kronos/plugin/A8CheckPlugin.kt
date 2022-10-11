@@ -44,14 +44,15 @@ class A8CheckPlugin : Plugin<Project> {
             project.afterEvaluate {
                 val assembleTask =
                     project.tasks.findByName("assemble${applicationVariant.name.capitalize()}")
-                project.tasks.register(
+                val a8Task = project.tasks.register(
                     "a8Check${applicationVariant.name.capitalize()}Task", A8Task::class.java
                 ) {
                     it.classPath.set(paths)
                     it.apkFolder.set(applicationVariant.artifacts.get(SingleArtifact.APK))
                     it.builtArtifactsLoader.set(applicationVariant.artifacts.getBuiltArtifactsLoader())
-                    it.mustRunAfter(assembleTask)
+
                 }
+                assembleTask?.finalizedBy(a8Task)
             }
 
         }
