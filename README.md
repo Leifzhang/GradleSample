@@ -1,4 +1,7 @@
 # GradleTask
+
+![Profile views](https://gpvc.arturio.dev/LeifzhangGradleSample)
+
  
 ## 功能介绍
  
