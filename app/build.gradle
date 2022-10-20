@@ -4,12 +4,12 @@ apply plugin: "kronos.library"
 apply plugin: "kronos.a8"
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "com.kronos.sample.gradle"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
 
@@ -22,6 +22,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -40,4 +41,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     //  implementation 'com.github.leifzhang:QrCodeLibrary:0.0.1'
 //    implementation dep.okhttp
+}
+a8 {
+  //  rules = file("../.buildscripts/a8_rules.txt")
 }

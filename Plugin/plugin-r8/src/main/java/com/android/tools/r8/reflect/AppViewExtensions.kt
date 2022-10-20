@@ -14,7 +14,7 @@ fun AppInfoWithClassHierarchy.reflectResolveMethodOnClassStep2(
     methodProto: DexProto,
     methodName: DexString,
     initialResolutionHolder: DexClass
-): MethodResolutionResult {
+): MethodResolutionResult? {
     val result = this.invokeMethod(
         "resolveMethodOnClassStep2",
         arrayOf(
@@ -29,7 +29,7 @@ fun AppInfoWithClassHierarchy.reflectResolveMethodOnClassStep2(
 
 fun AppInfoWithClassHierarchy.reflectResolveMethodStep3(
     clazz: DexClass, methodProto: DexProto, methodName: DexString
-): MethodResolutionResult {
+): MethodResolutionResult? {
     val result = this.invokeMethod(
         "resolveMethodOnClassStep2",
         arrayOf(
@@ -37,6 +37,6 @@ fun AppInfoWithClassHierarchy.reflectResolveMethodStep3(
             DexProto::class.java,
             DexString::class.java
         ), arrayOf(clazz, methodProto, methodName)
-    ) as MethodResolutionResult
+    ) as MethodResolutionResult?
     return result
 }

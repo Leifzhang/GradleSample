@@ -1,22 +1,11 @@
 package com.kronos.plugin
 
-import com.android.build.api.artifact.SingleArtifact
-import com.android.build.api.instrumentation.InstrumentationScope
-import com.android.build.api.variant.AndroidComponentsExtension
-import com.android.build.api.variant.ApplicationAndroidComponentsExtension
-import com.android.build.api.variant.ApplicationVariant
-import com.android.tools.r8.A8
-import com.android.tools.r8.Diagnostic
-import com.android.tools.r8.utils.DexResourceProvider
-import org.apache.tools.ant.taskdefs.ManifestTask
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.kronos.plugin.extension.A8Rules
+import com.kronos.plugin.utils.FileUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.io.File
-import java.nio.file.Path
-import java.util.*
-import java.util.regex.Pattern
-import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
 
 /**
  *
@@ -27,36 +16,44 @@ import kotlin.collections.HashSet
 class A8CheckPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-
-        val androidComponents =
-            project.extensions.getByType(ApplicationAndroidComponentsExtension::class.java)
-        //val baseAppModuleExtension = project.extensions.getByType(BaseAppModuleExtension::class.java)
-        androidComponents.onVariants { applicationVariant ->
-
-            val paths = ArrayList<Path>()
-            /*   applicationVariant.sources
-               for (f: variant.getCompileClasspath (null).files) {
-                   paths.add(f.toPath())
-               }*/
-            androidComponents.sdkComponents.bootClasspath.get().forEach {
-                paths.add(it.asFile.toPath())
-            }
+        project.extensions.create(EXE, A8Rules::class.java)
+        project.plugins.withId("com.android.application") {
+            val androidComponents =
+                project.extensions.findByType(BaseAppModuleExtension::class.java) ?: return@withId
+            val a8Rules = project.extensions.findByType(A8Rules::class.java)
             project.afterEvaluate {
-                val assembleTask =
-                    project.tasks.findByName("assemble${applicationVariant.name.capitalize()}")
-                val a8Task = project.tasks.register(
-                    "a8Check${applicationVariant.name.capitalize()}Task", A8Task::class.java
-                ) {
-                    it.classPath.set(paths)
-                    it.apkFolder.set(applicationVariant.artifacts.get(SingleArtifact.APK))
-                    it.builtArtifactsLoader.set(applicationVariant.artifacts.getBuiltArtifactsLoader())
+                androidComponents.applicationVariants.forEach { variant ->
+                    val a8Task = project.tasks.register(
+                        "a8Check${variant.name.capitalize()}Task", A8Task::class.java
+                    ) { task ->
+                        task.apkFolder.set(variant.outputs.first().outputFile)
+                        task.variantName.set(variant.name)
+                        if (a8Rules?.rules != null) {
+                            task.rules.set(a8Rules.rules)
+                        } else {
+                            task.rules.set(
+                                File(
+                                    FileUtils.getRootFile(project.gradle),
+                                    ".buildscripts/a8_ruls.txt"
+                                )
+                            )
 
+                        }
+
+                        task.output.set(
+                            File(
+                                project.buildDir,
+                                "a8/${variant.name}/a8_error_msg.txt"
+                            )
+                        )
+                    }
+                    variant.assembleProvider.get().finalizedBy(a8Task)
                 }
-                assembleTask?.finalizedBy(a8Task)
             }
-
         }
+    }
 
-
+    companion object {
+        const val EXE = "a8"
     }
 }

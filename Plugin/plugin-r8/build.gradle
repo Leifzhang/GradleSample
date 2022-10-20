@@ -13,7 +13,7 @@ dependencies {
     implementation gradleApi()
     implementation localGroovy()
     compileOnly "com.android.tools:r8:3.2.60"
-    compileOnly "com.android.tools.build:gradle-api:7.2.2"
+    compileOnly "com.android.tools.build:gradle:7.2.2"
 }
 
 gradlePlugin {

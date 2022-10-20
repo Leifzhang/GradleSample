@@ -1,4 +1,4 @@
-package com.kronos.plugin.version.utils
+package com.kronos.plugin.utils
 
 import org.gradle.api.invocation.Gradle
 import java.io.File
@@ -10,6 +10,18 @@ import java.io.File
  *
  */
 object FileUtils {
+
+    fun File?.getGradleVersionFile(): File? {
+        if (this == null) {
+            return null
+        }
+        val file = File(this, "plugins.gradle")
+        if (file.exists()) {
+            return file
+        }
+        return null
+    }
+
 
     fun getRootFile(gradle: Gradle): File? {
         return gradle.startParameter.currentDir
