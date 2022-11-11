@@ -40,12 +40,7 @@ class PluginVersionGradlePlugin : Plugin<Gradle> {
                 val rootProject = gradle.rootProject
                 rootProject.configurations.all {
                     resolutionStrategy {
-                        Logger.debug("ConfigurationName:$name ")
                         preferProjectModules()
-                        eachDependency {
-
-                            Logger.debug("ConfigurationName:$name ")
-                        }
                         dependencySubstitution {
                             all {
                                 if (requested is ModuleComponentSelector) {
@@ -62,7 +57,6 @@ class PluginVersionGradlePlugin : Plugin<Gradle> {
                                     }
                                 }
                             }
-
                         }
                     }
                 }

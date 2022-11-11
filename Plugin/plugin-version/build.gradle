@@ -10,7 +10,7 @@ plugins {
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
-    implementation 'org.yaml:snakeyaml:1.26'
+    implementation 'org.yaml:snakeyaml:1.30'
 }
 
 java {

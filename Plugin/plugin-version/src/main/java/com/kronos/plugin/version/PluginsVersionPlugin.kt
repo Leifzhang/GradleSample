@@ -4,6 +4,10 @@ import com.kronos.plugin.version.utils.FileUtils
 import com.kronos.plugin.version.utils.IncludeBuildInsertScript
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
+import org.gradle.api.initialization.resolve.RepositoriesMode
+import org.gradle.api.model.ObjectFactory
+import java.io.File
+import javax.inject.Inject
 
 /**
  *
@@ -11,19 +15,26 @@ import org.gradle.api.initialization.Settings
  *  @Since 2022/2/9
  *
  */
-class PluginsVersionPlugin : Plugin<Settings> {
+class PluginsVersionPlugin @Inject constructor(private val factory: ObjectFactory) :
+    Plugin<Settings> {
 
     override fun apply(target: Settings) {
         FileUtils.getRootProjectDir(target.gradle)?.let {
             IncludeBuildInsertScript().execute(target, it)
         }
         target.gradle.plugins.apply(PluginVersionGradlePlugin::class.java)
-        target.dependencyResolutionManagement.versionCatalogs {
-            register("support") {
-                alias("coreKtx").to("androidx.core:core-ktx:1.3.2")
-            }
-            register("plugin"){
-                alias("agpPlugin").to("com.android.tools.build:gradle:7.1.1")
+        target.enableFeaturePreview("VERSION_CATALOGS")
+        target.dependencyResolutionManagement {
+            repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+            versionCatalogs {
+                val root = FileUtils.getRootProjectDir(target.gradle)
+                root?.let { file ->
+                    register("libs") {
+                        val toml = File(file, "dependencies.versions.toml")
+                        //    val settings = SettingsImp
+                        from(factory.fileCollection().from(toml))
+                    }
+                }
             }
         }
     }

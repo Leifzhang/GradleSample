@@ -19,11 +19,6 @@ class DefaultPluginManagementAction(private val settings: Settings) : Action<Plu
     private val root = FileUtils.getRootProjectDir(settings.gradle)
 
     override fun execute(pluginManagement: PluginManagementSpec) {
-        val cataLog = settings.extensions
-            .getByType<VersionCatalogsExtension>().named("plugin")
-        cataLog.pluginAliases.forEach {
-
-        }
         root?.let {
             pluginManagement.resolutionStrategy(GradlePluginsStrategy(it))
         }

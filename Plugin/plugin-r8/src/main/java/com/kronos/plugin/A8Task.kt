@@ -41,13 +41,14 @@ abstract class A8Task : DefaultTask() {
     @TaskAction
     fun taskAction() {
         val apk = apkFolder.get()
+        apk.isDirectory
         a8Check(apk)
     }
 
 
     private fun a8Check(apk: File) {
         logger.lifecycle("开始 Dex Api 检查 " + time())
-        val a8ErrorPattern = "(?:.*from \\\\S* ([^( ]*)\\\\.)|(?:.*from ([^( ]*)\\\\Z)"
+        val a8ErrorPattern = "(?:.*from \\S* ([^( ]*)\\.)|(?:.*from ([^( ]*)\\Z)"
         val pattern = Pattern.compile(a8ErrorPattern)
         val set = HashSet<String>()
         val fileNames = HashSet<String>()
@@ -125,6 +126,7 @@ abstract class A8Task : DefaultTask() {
     private fun backtrackModule(
         path: Set<String>, fileNames: Set<String>, errorMsg: StringBuilder, project: Project
     ): String? {
+        logger.lifecycle("fileNames :  $fileNames")
         val moduleNames = HashMap<String, String>()
         project.rootDir.walkTopDown().forEach {
             if (it.absolutePath != it.canonicalPath) return null

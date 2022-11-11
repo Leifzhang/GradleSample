@@ -13,6 +13,14 @@ pluginManagement {
         id("org.gradle.kotlin.kotlin-dsl") version '2.2.0' apply(false)
     }
 }
+
+/*dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    versionCatalogs {
+        create("libs") { from(files("${rootDir.path}/dependencies.versions.toml")) }
+    }
+}*/
+
 buildscript {
     repositories {
         google()
@@ -23,16 +31,19 @@ buildscript {
     dependencies {
         // 本地先尝试下 maven local 任务之后添加
         // classpath "com.kronos.plugin:plugin-repo:0.2.0"
-        classpath "com.kronos.plugin:plugin-version:0.2.0"
+        classpath "com.kronos.plugin:plugin-version:0.2.8"
 
     }
 }
-plugins {
+/*plugins {
     //  id("kronos.monitor") version("0.2.1")
-}
+}*/
 // 本地先尝试下 maven local 任务之后添加
 //apply plugin: "kronos.plugins"
+apply plugin: "kronos.plugins"
 
 
 include ':app'
 includeBuild("./Plugin")
+
+enableFeaturePreview("VERSION_CATALOGS")

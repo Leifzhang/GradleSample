@@ -2,7 +2,7 @@
 
 
 buildscript {
-    ext.kotlin_version = "1.6.10-RC"
+    ext.kotlin_version = "1.7.10"
     repositories {
         maven { setUrl("https://maven.aliyun.com/repository/central/") }
         maven {
@@ -28,12 +28,6 @@ plugins {
 }
 
 
-allprojects {
-    repositories {
-        maven { setUrl("https://maven.aliyun.com/repository/central/") }
-        google()
-    }
-}
 
 
 task clean(type: Delete) {

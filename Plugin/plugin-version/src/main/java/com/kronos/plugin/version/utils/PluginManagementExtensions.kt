@@ -9,7 +9,7 @@ package com.kronos.plugin.version.utils
 object PluginManagementExtensions {
 
 
-    val PLUGIN_MANAGEMENT_SCRIPT = "initscript {\n" + "    repositories {\n" +
+    const val PLUGIN_MANAGEMENT_SCRIPT = "initscript {\n" + "    repositories {\n" +
             "        mavenLocal()\n " +
             "\n" +
             "        maven { setUrl(\"https://maven.aliyun.com/repository/central/\") }\n" +

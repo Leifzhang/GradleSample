@@ -11,6 +11,17 @@ import java.io.File
  */
 object FileUtils {
 
+    fun File?.getGradleVersionFile(): File? {
+        if (this == null) {
+            return null
+        }
+        val file = File(this, "plugins.gradle")
+        if (file.exists()) {
+            return file
+        }
+        return null
+    }
+
     fun getRootFile(gradle: Gradle): File? {
         return gradle.startParameter.currentDir
     }
