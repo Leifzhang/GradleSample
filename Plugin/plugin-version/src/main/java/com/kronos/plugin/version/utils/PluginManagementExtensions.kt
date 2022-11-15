@@ -16,7 +16,7 @@ object PluginManagementExtensions {
             "        google()" +
             "    }\n" +
             "    dependencies {\n" +
-            "        classpath \"com.kronos.plugin:plugin-version:0.2.0\"\n" +
+            "        classpath \"com.kronos.plugin:plugin-version:0.2.11\"\n" +
             "    }\n" +
             "}\n"
 

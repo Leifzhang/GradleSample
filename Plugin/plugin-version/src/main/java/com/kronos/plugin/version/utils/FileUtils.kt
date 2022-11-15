@@ -1,6 +1,8 @@
 package com.kronos.plugin.version.utils
 
 import org.gradle.api.invocation.Gradle
+import org.gradle.api.plugins.ExtensionAware
+import org.gradle.api.plugins.ExtraPropertiesExtension
 import java.io.File
 
 /**
@@ -37,4 +39,20 @@ object FileUtils {
         }
         return root
     }
+}
+
+
+fun Gradle.extra(): ExtraPropertiesExtension? {
+    return if (this is ExtensionAware) {
+        return this.extensions.extraProperties
+    } else {
+        null
+    }
+}
+
+fun <T> ExtraPropertiesExtension.getExtra(key: String): T? {
+    if (has(key)) {
+        return get(key) as? T
+    }
+    return null
 }

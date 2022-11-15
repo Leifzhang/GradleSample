@@ -10,6 +10,7 @@ plugins {
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
+    implementation "org.jooq:joor-java-8:0.9.14"
     implementation 'org.yaml:snakeyaml:1.30'
 }
 

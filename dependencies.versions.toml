@@ -46,5 +46,6 @@ room-compiler = "androidx.room:room-compiler:2.4.2"
 core-ui = "androidx.legacy:legacy-support-core-ui:1.0.0"
 localbroadcastmanager = "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
 documentfile = "androidx.documentfile:documentfile:1.0.1"
-palette = "androidx.palette:palette:1.0.0"
 
+
+palette = "androidx.palette:palette:1.0.0"

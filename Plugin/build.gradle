@@ -10,16 +10,17 @@ plugins {
 }
 
 allprojects {
-    repositories {
+/*    repositories {
+        mavenLocal()
         maven { setUrl("https://maven.aliyun.com/repository/central/") }
         maven {
             setUrl("https://storage.googleapis.com/r8-releases/raw")
         }
 
         google()
-    }
+    }*/
     group = "com.kronos.plugin"
-    version = "0.2.8"
+    version = "0.2.11"
 }
 
 task clean(type: Delete) {

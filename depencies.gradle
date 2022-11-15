@@ -1,0 +1,22 @@
+apply plugin: "kronos.plugins"
+
+catalogs {
+    script = new File(rootProjectDir, "depencies.gradle")
+    versionCatalogs {
+        create("libs") { from(files("${rootProjectDir.path}/dependencies.versions.toml")) }
+    }
+    dependencyResolutionManagement {
+        repositories {
+            maven { setUrl("https://maven.aliyun.com/repository/central/") }
+            maven {
+                setUrl("https://storage.googleapis.com/r8-releases/raw")
+            }
+            gradlePluginPortal()
+            google()
+            mavenLocal()
+            maven {
+                url "https://dl.bintray.com/kotlin/kotlin-eap"
+            }
+        }
+    }
+}

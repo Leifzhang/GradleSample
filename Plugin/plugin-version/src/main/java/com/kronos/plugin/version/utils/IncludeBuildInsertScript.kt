@@ -12,13 +12,27 @@ import java.io.File
  */
 class IncludeBuildInsertScript {
 
-    fun execute(target: Settings, root: File) {
+    fun execute(target: Settings, root: File, script: File?) {
         val initFile = getBuildTemp(root, "global.settings.pluginManagement.gradle")
         if (initFile.exists()) {
             initFile.delete()
         }
+        script?.let {
+            initFile.appendText("gradle.ext.fawkesScriptFile=\"${it.path}\"\n")
+        }
         initFile.appendText(PLUGIN_MANAGEMENT_SCRIPT)
-        initFile.appendText("gradle.apply plugin: com.kronos.plugin.version.PluginVersionGradlePlugin.class")
+        initFile.appendText("gradle.apply plugin: com.kronos.plugin.version.PluginVersionGradlePlugin.class\r\n")
+      /*  initFile.appendText(
+            "buildscript {\n" +
+                    "    repositories {\n" +
+                    "        mavenLocal()\n" +
+                    "    }\n" +
+                    "    dependencies {\n" +
+                    "        classpath \"com.kronos.plugin:plugin-version:0.2.11\"\n" +
+                    "\n" +
+                    "    }\n" +
+                    "}"
+        )*/
         val fileList = mutableListOf<File>().apply {
             addAll(target.gradle.startParameter.initScripts)
         }

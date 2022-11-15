@@ -30,6 +30,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 //    implementation support.coreKtx
     implementation libs.compat
+    implementation libs.core.ktx
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.1'
@@ -41,5 +42,5 @@ dependencies {
 //    implementation dep.okhttp
 }
 a8 {
-  //  rules = file("../.buildscripts/a8_rules.txt")
+    //  rules = file("../.buildscripts/a8_rules.txt")
 }
