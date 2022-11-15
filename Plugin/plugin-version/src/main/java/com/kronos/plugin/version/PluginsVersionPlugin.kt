@@ -1,18 +1,11 @@
 package com.kronos.plugin.version
 
-import com.kronos.plugin.version.extensions.CatalogsExtensions
 import com.kronos.plugin.version.extensions.CatalogsExtensionsImp
 import com.kronos.plugin.version.utils.FileUtils
 import com.kronos.plugin.version.utils.IncludeBuildInsertScript
-import org.gradle.BuildAdapter
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.api.initialization.resolve.RepositoriesMode
-import org.gradle.api.invocation.Gradle
-import org.gradle.api.model.ObjectFactory
-import org.gradle.kotlin.dsl.apply
-import org.joor.Reflect
-import java.io.File
 import javax.inject.Inject
 
 /**
@@ -22,7 +15,7 @@ import javax.inject.Inject
  *
  */
 
-class PluginsVersionPlugin @Inject constructor(private val factory: ObjectFactory) :
+class PluginsVersionPlugin constructor() :
     Plugin<Settings> {
 
     override fun apply(target: Settings) {

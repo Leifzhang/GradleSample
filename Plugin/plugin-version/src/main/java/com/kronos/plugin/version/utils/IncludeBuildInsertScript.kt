@@ -22,17 +22,6 @@ class IncludeBuildInsertScript {
         }
         initFile.appendText(PLUGIN_MANAGEMENT_SCRIPT)
         initFile.appendText("gradle.apply plugin: com.kronos.plugin.version.PluginVersionGradlePlugin.class\r\n")
-      /*  initFile.appendText(
-            "buildscript {\n" +
-                    "    repositories {\n" +
-                    "        mavenLocal()\n" +
-                    "    }\n" +
-                    "    dependencies {\n" +
-                    "        classpath \"com.kronos.plugin:plugin-version:0.2.11\"\n" +
-                    "\n" +
-                    "    }\n" +
-                    "}"
-        )*/
         val fileList = mutableListOf<File>().apply {
             addAll(target.gradle.startParameter.initScripts)
         }

@@ -39,11 +39,12 @@ buildscript {
     //  id("kronos.monitor") version("0.2.1")
 }*/
 // 本地先尝试下 maven local 任务之后添加
-//apply plugin: "kronos.plugins"
+apply plugin: "kronos.plugins"
 
 
 apply from: "${rootDir.path}/depencies.gradle"
 include ':app'
 includeBuild("./Plugin")
+includeBuild("./Sample")
 
 enableFeaturePreview("VERSION_CATALOGS")

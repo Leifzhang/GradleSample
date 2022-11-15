@@ -1,4 +1,4 @@
-apply plugin: "kronos.plugins"
+//apply plugin: "kronos.plugins"
 
 catalogs {
     script = new File(rootProjectDir, "depencies.gradle")

@@ -22,18 +22,19 @@ import java.io.File
 class PluginVersionGradlePlugin : Plugin<Gradle> {
 
     override fun apply(target: Gradle) {
-
-        target.beforeSettings {
+/*        target.beforeSettings {
             if (this.gradle.parent != null) {
-                settings.pluginManager.apply(PluginsVersionPlugin::class.java)
             }
-        }
+        }*/
         target.settingsEvaluated {
-            pluginManagement(DefaultPluginManagementAction(this))
-            GradlePluginsVersion().execute(this)
             if (this.gradle.parent != null) {
+                pluginManager.apply(PluginsVersionPlugin::class.java)
+                this.plugins.apply(PluginsVersionPlugin::class.java)
+              //  this.plugins.apply("kronos.plugins")
+                pluginManagement(DefaultPluginManagementAction(this))
+                GradlePluginsVersion().execute(this)
                 gradle.extra()?.getExtra<String>("fawkesScriptFile")?.apply {
-                         apply(from = File(this))
+                    apply(from = File(this))
                 }
             }
         }
