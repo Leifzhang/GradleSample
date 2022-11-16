@@ -30,19 +30,6 @@ class PluginsVersionPlugin constructor() :
         target.enableFeaturePreview("VERSION_CATALOGS")
         target.dependencyResolutionManagement {
             repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-            // versionCatalogs.
-            // cataglogs?.versionCatalogs(versionCatalogs)
-            /*  versionCatalogs {
-                  val root = FileUtils.getRootProjectDir(target.gradle)
-                  root?.let { file ->
-                      register("libs") {
-                          val toml = File(file, "dependencies.versions.toml")
-                          from(factory.fileCollection().from(toml))
-
-                      }
-
-                  }
-              }*/
         }
     }
 
