@@ -9,6 +9,9 @@
       <module name="Plugin.plugin-monitor" target="1.8" />
       <module name="Plugin.plugin-monitor.main" target="1.8" />
       <module name="Plugin.plugin-monitor.test" target="1.8" />
+      <module name="Plugin.plugin-r8" target="1.8" />
+      <module name="Plugin.plugin-r8.main" target="1.8" />
+      <module name="Plugin.plugin-r8.test" target="1.8" />
       <module name="Plugin.plugin-repo" target="1.8" />
       <module name="Plugin.plugin-repo.main" target="1.8" />
       <module name="Plugin.plugin-repo.test" target="1.8" />

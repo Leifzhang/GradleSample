@@ -11,15 +11,19 @@ repo插件同时项目会自动帮各位去同步远端的仓库代码，如果�
 
 dep插件则是负责将项目内的依赖版本更换成远端版本，同时进行version版本号策略清洗。
 
-version 拿来做的是plugin的dep操作，因为考虑到多仓工程全局配置，所以尝试性的做了些黑科技
+version 拿来做的是plugin的dep操作，因为考虑到多仓工程全局配置，所以尝试性的做了些黑科技，已经完成将versionCatalog定义在单一gradle文件内，然后完成项目内所有工程的共享能力。
 
-##
+monitor 拿来做gradle 相关日志统计，以及编译数据相关收集，以及获取app相关的依赖。
+
+plugin-r8 apk 方法签名检查工具，基于android r8 重新适配，偷学大佬的代码。
+
+## 使用规范
 
 demo 因为很多都是settings插件，所以需要clone完工程之后将几个plugin推送到mavenLocal，之后在外层的settings直接引入对应插件。
 
 当前貌似没有找到settings插件的当场调试模式。
 
-全局插件采用了生成initscript，之后用文件的形式添加到`startParameter`中去，在第一个settings插件之后影响到所有includebuild工程。
+全局插件采用了生成`initscript`，之后用文件的形式添加到`startParameter`中去，在第一个settings插件之后影响到所有`includebuild`工程。
 
 ## 使用简介
 
@@ -79,13 +83,13 @@ projects:
       - name: abb
 ```
 
-## 科普
+# 科普
 
-### substitute 
+## substitute 
 
 Gradle依赖替换,在项目开发过程中，不可避免的需要引入一些第三方库，而不同的第三方库之间，可能存在一些依赖关系。例如：你依赖了库A与B，而同时B也依赖于A。这样就可能存在这种情况：你依赖的A的版本与B中依赖的A的版本不同。同时可以把依赖直接变更为project的形式。
 
-### 科学建议 
+## 科学建议 
 
 个人建议每个模块都根据自己的group设置好group，以及模块名，一定要和aar版本一致，这样就可以充分的利用gradle本身的特性，如果当前module存在，就会自动完成aar切换到源码的操作.
 

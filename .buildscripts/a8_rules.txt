@@ -1,0 +1,9 @@
+# for android system
+# -dontnote  dalvik.annotation.**
+# -dontnote  android.os.**
+# -dontnote  sun.misc.Unsafe
+# -dontnote  android.graphics.Insets
+-dontnote  android.view.WindowInsets
+# -dontnote  android.content.**
+# -dontnote  dalvik.system.CloseGuard
+# -dontnote  androidx.**

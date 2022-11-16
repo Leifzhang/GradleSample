@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: "kronos.library"
+apply plugin: "kronos.a8"
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "com.kronos.sample.gradle"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
 
@@ -21,15 +22,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
-    def aaa = Plugins.extra("11")
-    logger.lifecycle("aaa:" + aaa)
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation support.coreKtx
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+//    implementation support.coreKtx
+    implementation libs.compat
+    implementation libs.core.ktx
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.1'
@@ -39,4 +40,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     //  implementation 'com.github.leifzhang:QrCodeLibrary:0.0.1'
 //    implementation dep.okhttp
+}
+a8 {
+    //  rules = file("../.buildscripts/a8_rules.txt")
 }

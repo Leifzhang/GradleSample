@@ -1,0 +1,27 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+    id("java-gradle-plugin")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    compileOnly "com.android.tools:r8:3.2.60"
+    compileOnly "com.android.tools.build:gradle:7.2.2"
+}
+
+gradlePlugin {
+    plugins {
+        monitorPlugin {
+            id = 'kronos.a8'
+            // 实现这个插件的类的路径
+            implementationClass = 'com.kronos.plugin.A8CheckPlugin'
+        }
+    }
+}

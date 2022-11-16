@@ -1,9 +1,12 @@
 package com.kronos.plugin.version
 
+import com.kronos.plugin.version.extensions.CatalogsExtensionsImp
 import com.kronos.plugin.version.utils.FileUtils
 import com.kronos.plugin.version.utils.IncludeBuildInsertScript
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
+import org.gradle.api.initialization.resolve.RepositoriesMode
+import javax.inject.Inject
 
 /**
  *
@@ -11,20 +14,22 @@ import org.gradle.api.initialization.Settings
  *  @Since 2022/2/9
  *
  */
-class PluginsVersionPlugin : Plugin<Settings> {
+
+class PluginsVersionPlugin constructor() :
+    Plugin<Settings> {
 
     override fun apply(target: Settings) {
-        FileUtils.getRootProjectDir(target.gradle)?.let {
-            IncludeBuildInsertScript().execute(target, it)
-        }
+        val catalogs =
+            target.extensions.create("catalogs", CatalogsExtensionsImp::class.java, target)
         target.gradle.plugins.apply(PluginVersionGradlePlugin::class.java)
-        target.dependencyResolutionManagement.versionCatalogs {
-            register("support") {
-                alias("coreKtx").to("androidx.core:core-ktx:1.3.2")
+        target.gradle.settingsEvaluated {
+            FileUtils.getRootProjectDir(target.gradle)?.let {
+                IncludeBuildInsertScript().execute(target, it, catalogs.script)
             }
-            register("plugin"){
-                alias("agpPlugin").to("com.android.tools.build:gradle:7.1.1")
-            }
+        }
+        target.enableFeaturePreview("VERSION_CATALOGS")
+        target.dependencyResolutionManagement {
+            repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
         }
     }
 
