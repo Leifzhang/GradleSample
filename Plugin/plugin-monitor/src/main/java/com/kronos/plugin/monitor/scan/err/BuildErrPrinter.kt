@@ -8,11 +8,11 @@ import java.io.Writer
 
 class BuildErrPrinter(var file: LogFile) {
     fun execute(err: BuildErr) {
-        if (err.throwable != null) {
-            val tt: Writer = StringWriter()
-            val printWriter = PrintWriter(tt)
-            err.throwable.printStackTrace(printWriter)
-            file.append(tt.toString())
+        val tt: Writer = StringWriter()
+        val printWriter = PrintWriter(tt)
+        err.throwable.forEach {
+            printWriter.print(it.description)
         }
+        file.append(tt.toString())
     }
 }

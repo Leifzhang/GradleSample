@@ -28,7 +28,25 @@ plugins {
 }
 
 
-
+allprojects {
+    apply from: new File(getRootDir(), ".buildscripts/flavor.gradle")
+    group = "com.kronos.sample"
+    configurations.all { Configuration c ->
+        c.resolutionStrategy {
+            dependencySubstitution {
+                all { DependencySubstitution dependency ->
+                    if (dependency.requested instanceof ModuleComponentSelector) {
+                        def p = rootProject.allprojects.find { p -> p.group == dependency.requested.group && p.name == dependency.requested.module }
+                        if (p != null) {
+                            logger.lifecycle(project(p.path).name + ":selected local project")
+                            dependency.useTarget(project(p.path), 'selected local project')
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 task clean(type: Delete) {
     delete rootProject.buildDir

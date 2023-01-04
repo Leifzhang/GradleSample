@@ -2,8 +2,10 @@
 
 catalogs {
     script = new File(rootProjectDir, "depencies.gradle")
+
     versionCatalogs {
-        create("libs") { from(files("${rootProjectDir.path}/dependencies.versions.toml")) }
+        create("libs") { from(files("${rootProjectDir.path}/toml/dependencies.versions.toml")) }
+        create("module") { from(files("${rootProjectDir.path}/toml/module.versions.toml")) }
     }
     dependencyResolutionManagement {
         repositories {
@@ -19,4 +21,5 @@ catalogs {
             }
         }
     }
+
 }

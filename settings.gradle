@@ -11,15 +11,10 @@ pluginManagement {
     plugins {
         id 'org.jetbrains.kotlin.jvm' version '1.7.10'
         id("org.gradle.kotlin.kotlin-dsl") version '2.2.0' apply(false)
+        id 'com.android.library' version '7.2.2'
+        id 'org.jetbrains.kotlin.android' version '1.8.0-RC2'
     }
 }
-
-/*dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    versionCatalogs {
-        create("libs") { from(files("${rootDir.path}/dependencies.versions.toml")) }
-    }
-}*/
 
 buildscript {
     repositories {
@@ -35,14 +30,15 @@ buildscript {
 
     }
 }
-/*plugins {
-    //  id("kronos.monitor") version("0.2.1")
-}*/
+
+plugins {
+      id("kronos.monitor") version("0.2.11")
+}
 // 本地先尝试下 maven local 任务之后添加
 apply plugin: "kronos.plugins"
 
 
-apply from: "${rootDir.path}/depencies.gradle"
+apply from: "./depencies.gradle"
 include ':app'
 includeBuild("./Plugin")
 includeBuild("./Sample")

@@ -17,6 +17,11 @@ class A8CheckPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.extensions.create(EXE, A8Rules::class.java)
+
+        project.configurations.maybeCreate("test")
+        project.configurations.all {
+
+        }
         project.plugins.withId("com.android.application") {
             val androidComponents =
                 project.extensions.findByType(BaseAppModuleExtension::class.java) ?: return@withId

@@ -1,0 +1,176 @@
+import javax.inject.Inject
+
+buildscript {
+    repositories {
+        maven { setUrl("https://maven.aliyun.com/repository/central/") }
+        maven {
+            setUrl("https://storage.googleapis.com/r8-releases/raw")
+        }
+        google()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:7.2.2"
+    }
+}
+def flavors = ["pink", "blue"]
+def mockFlavors = flavors
+def firstFlavor = flavors[0]
+
+project.pluginManager.withPlugin('com.android.application', {
+    flavors.forEach({ flavor ->
+        if (project.file("src" + File.separator + flavor).exists()) {
+            android {
+                flavorDimensions "type"
+                if (!productFlavors.any({
+                    it.name == flavor
+                })) {
+                    productFlavors.create(flavor, {
+                        dimension "type"
+                        matchingFallbacks = ['pink']
+                    })
+                }
+            }
+        }
+    })
+    if (android.productFlavors.size() > 0) {
+        if (!android.productFlavors.any({ it.name == "pink" })) {
+            android {
+                flavorDimensions "type"
+                productFlavors.create("pink", {
+                    dimension "type"
+                    matchingFallbacks = ['pink']
+                })
+            }
+        }
+    }
+    mockFlavors.forEach({
+        project.configurations.maybeCreate("${it}Implementation")
+        project.configurations.maybeCreate("${it}DebugImplementation")
+        project.configurations.maybeCreate("${it}ReleaseImplementation")
+        project.configurations.maybeCreate("${it}CompileOnly")
+        project.configurations.maybeCreate("${it}DebugCompileOnly")
+        project.configurations.maybeCreate("${it}ReleaseCompileOnly")
+        project.configurations.maybeCreate("${it}Api")
+        project.configurations.maybeCreate("${it}DebugApi")
+        project.configurations.maybeCreate("${it}ReleaseApi")
+        project.configurations.maybeCreate("${it}RuntimeOnly")
+        project.configurations.maybeCreate("${it}DebugRuntimeOnly")
+        project.configurations.maybeCreate("${it}ReleaseRuntimeOnly")
+    })
+})
+project.pluginManager.withPlugin('com.android.library', {
+    flavors.forEach({ flavor ->
+        if (project.file("src" + File.separator + flavor).exists()) {
+            android {
+                flavorDimensions "type"
+                if (!productFlavors.any({
+                    it.name == flavor
+                })) {
+                    productFlavors.create(flavor, {
+                        dimension "type"
+                        matchingFallbacks = ['pink']
+                    })
+                }
+            }
+        }
+    })
+    if (android.productFlavors.size() > 0) {
+        if (!android.productFlavors.any({ it.name == "pink" })) {
+            android {
+                flavorDimensions "type"
+                productFlavors.create("pink", {
+                    dimension "type"
+                    matchingFallbacks = ['pink']
+                })
+            }
+        }
+    }
+    mockFlavors.forEach({
+        project.configurations.maybeCreate("${it}Implementation")
+        project.configurations.maybeCreate("${it}DebugImplementation")
+        project.configurations.maybeCreate("${it}ReleaseImplementation")
+        project.configurations.maybeCreate("${it}CompileOnly")
+        project.configurations.maybeCreate("${it}DebugCompileOnly")
+        project.configurations.maybeCreate("${it}ReleaseCompileOnly")
+        project.configurations.maybeCreate("${it}Api")
+        project.configurations.maybeCreate("${it}DebugApi")
+        project.configurations.maybeCreate("${it}ReleaseApi")
+        project.configurations.maybeCreate("${it}RuntimeOnly")
+        project.configurations.maybeCreate("${it}DebugRuntimeOnly")
+        project.configurations.maybeCreate("${it}ReleaseRuntimeOnly")
+    })
+})
+
+project.ext.defaultFlavor = firstFlavor
+def flavorAttr = this.getClass().classLoader.loadClass("com.android.build.api.attributes.ProductFlavorAttr");
+AttributeMatchingStrategy matchingStrategy = project.getDependencies().getAttributesSchema().attribute(Attribute.of("type", flavorAttr));
+matchingStrategy.getCompatibilityRules().add(ProductFlavorAttrAttributeAttributeCompatibilityRule.class, new Action<ActionConfiguration>() {
+
+    @Override
+    void execute(ActionConfiguration actionConfiguration) {
+        actionConfiguration.params(project.ext.defaultFlavor);
+    }
+})
+matchingStrategy.getDisambiguationRules().add(ProductFlavorAttrAttributeDisambiguationRule.class, new Action<ActionConfiguration>() {
+
+    @Override
+    void execute(ActionConfiguration actionConfiguration) {
+        actionConfiguration.params(project.ext.defaultFlavor);
+    }
+})
+
+
+class ProductFlavorAttrAttributeAttributeCompatibilityRule implements org.gradle.api.attributes.AttributeCompatibilityRule<CompatibilityCheckDetails> {
+    def defaultFlavor = "pink"
+    def perfectFlavor = "pink"
+
+    @Inject
+    ProductFlavorAttrAttributeAttributeCompatibilityRule(def defaultFlavor) {
+        this.perfectFlavor = defaultFlavor
+    }
+
+    void execute(CompatibilityCheckDetails details) {
+        def producerValue = details.getProducerValue();
+        def consumerValue = details.getConsumerValue();
+        if (producerValue == consumerValue) {
+            details.compatible();
+        } else {
+            if (producerValue.toString() == perfectFlavor) {
+                details.compatible()
+            } else if (producerValue.toString() == defaultFlavor) {
+                details.compatible()
+            }
+        }
+    }
+}
+
+class ProductFlavorAttrAttributeDisambiguationRule implements org.gradle.api.attributes.AttributeDisambiguationRule<MultipleCandidatesDetails> {
+    def defaultFlavor = "pink"
+    def perfectFlavor = "pink"
+
+    @Inject
+    ProductFlavorAttrAttributeDisambiguationRule(def defaultFlavor) {
+        this.perfectFlavor = defaultFlavor
+    }
+
+    void execute(MultipleCandidatesDetails details) {
+        def consumerValue = details.getConsumerValue();
+        def candidates = details.getCandidateValues();
+        if (candidates.contains(consumerValue)) {
+            details.closestMatch(consumerValue);
+            return
+        }
+        for (def v : candidates) {
+            if (v.toString().contains(perfectFlavor)) {
+                details.closestMatch(v)
+                return
+            }
+        }
+        for (def v : candidates) {
+            if (v.toString().contains(defaultFlavor)) {
+                details.closestMatch(v)
+                return
+            }
+        }
+    }
+}

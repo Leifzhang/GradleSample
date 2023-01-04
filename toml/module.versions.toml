@@ -1,0 +1,5 @@
+[versions]
+snapshotRev = "6.6.6"
+
+[libraries]
+module1 = { module = "com.kronos.sample:module1", version.ref = "snapshotRev" }

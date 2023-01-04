@@ -11,18 +11,20 @@ import org.gradle.internal.classpath.DefaultClassPath
  *
  */
 object PluginManagementExtensions {
-
-
-    const val PLUGIN_MANAGEMENT_SCRIPT = "initscript {\n" + "    repositories {\n" +
-            "        mavenLocal()\n " +
-            "\n" +
-            "        maven { setUrl(\"https://maven.aliyun.com/repository/central/\") }\n" +
-            "        google()" +
-            "    }\n" +
-            "    dependencies {\n" +
-            "        classpath \"com.kronos.plugin:plugin-version:0.2.11\"\n" +
-            "    }\n" +
-            "}\n"
+    const val PLUGIN_MANAGEMENT_SCRIPT =
+        """gradle.ext.fawkesScriptFile="/Users/zhangyang/GradleTask/depencies.gradle"
+initscript {
+    repositories {
+        mavenLocal()
+        maven { setUrl("https://maven.aliyun.com/repository/central/") }
+        google()    
+    }
+    dependencies {
+        classpath "com.kronos.plugin:plugin-version:0.2.11"
+    }
+}
+gradle.apply plugin: com.kronos.plugin.version.PluginVersionGradlePlugin.class
+    """
 
     fun createCoreClassLoader(
         classLoaderScopeRegistry: ClassLoaderScopeRegistry,

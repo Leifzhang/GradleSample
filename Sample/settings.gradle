@@ -6,4 +6,4 @@ pluginManagement {
     }
 }
 rootProject.name = "sample"
-include ':app'
+include ':module1'
