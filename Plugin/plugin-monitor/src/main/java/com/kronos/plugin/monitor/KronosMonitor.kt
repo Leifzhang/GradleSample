@@ -1,7 +1,6 @@
 package com.kronos.plugin.monitor
 
 import com.kronos.plugin.monitor.repo.DataRep
-import com.kronos.plugin.monitor.scan.DependencyScanner
 import com.kronos.plugin.monitor.scan.MonitorBuildOperationNotificationListener
 import com.kronos.plugin.monitor.utils.FileUtils
 import com.kronos.plugin.monitor.utils.OwnerProvider
@@ -19,7 +18,6 @@ class KronosMonitor {
 
     fun setup(target: Settings) {
         FileUtils.setup(target.gradle)
-
         val uuidFinder = get(target)
         DataRep.getRep().setup(
             target.gradle, uuidFinder.owner,
@@ -35,6 +33,7 @@ class KronosMonitor {
         DependencyScanner(target.gradle)
         BuildResultMonitor().setup(target)
         target.gradle.startParameter.systemPropertiesArgs
+        //   BuildResultMonitor().setup(target)
     }
 }
 

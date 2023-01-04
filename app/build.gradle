@@ -4,7 +4,7 @@ apply plugin: "kronos.library"
 apply plugin: "kronos.a8"
 
 android {
-    compileSdkVersion 32
+    compileSdk 32
 
     defaultConfig {
         applicationId "com.kronos.sample.gradle"
@@ -28,19 +28,37 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-//    implementation support.coreKtx
+
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation libs.compat
     implementation libs.core.ktx
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.1'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.3.1'
+    implementation module.module1
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.1'
     testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    //  implementation 'com.github.leifzhang:QrCodeLibrary:0.0.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    def allLibs = getFromToml("libs")
+    allLibs.each {
+        logger.lifecycle("allLibs   key:" + it.key + " value: " + it.value)
+    }
 //    implementation dep.okhttp
 }
 a8 {
-    //  rules = file("../.buildscripts/a8_rules.txt")
+    rules = file("../.buildscripts/a8_rules.txt")
+}
+
+
+def getFromToml(String name) {
+    def libz = rootProject.extensions
+            .getByType(VersionCatalogsExtension).named(name)
+    HashMap<String, String> deps = new HashMap<>()
+    libz.getDependencyAliases().each {
+        deps.put(it, libz.findLibrary(it).get().get().toString())
+    }
+
+
+    return deps
 }

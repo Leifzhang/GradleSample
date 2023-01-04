@@ -4,3 +4,25 @@ plugins {
     id('com.android.library') version '7.2.2' apply false
     id 'org.jetbrains.kotlin.jvm' version '1.7.10' apply false
 }
+
+
+allprojects {
+    apply from: new File(rootDir, ".buildscripts/flavor.gradle")
+    group = "com.kronos.sample"
+    version = "6.6.6"
+    configurations.all { Configuration c ->
+        c.resolutionStrategy {
+            dependencySubstitution {
+                all { DependencySubstitution dependency ->
+                    if (dependency.requested instanceof ModuleComponentSelector) {
+                        def p = rootProject.allprojects.find { p -> p.group == dependency.requested.group && p.name == dependency.requested.module }
+                        if (p != null) {
+                            logger.lifecycle(project(p.path).name + ":selected local project")
+                            dependency.useTarget(project(p.path), 'selected local project')
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

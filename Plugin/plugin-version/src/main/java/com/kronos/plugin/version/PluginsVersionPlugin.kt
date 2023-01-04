@@ -28,8 +28,10 @@ class PluginsVersionPlugin constructor() :
             }
         }
         target.enableFeaturePreview("VERSION_CATALOGS")
-        target.dependencyResolutionManagement {
-            repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+        target.pluginManagement {
+            resolutionStrategy {
+
+            }
         }
     }
 

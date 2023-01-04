@@ -35,4 +35,6 @@ abstract class CatalogsExtensionsImp @Inject constructor(settings: Settings) :
     fun dependencyResolutionManagement(action: Action<in DependencyResolutionManagement>) {
         action.execute(dependency)
     }
+
+
 }

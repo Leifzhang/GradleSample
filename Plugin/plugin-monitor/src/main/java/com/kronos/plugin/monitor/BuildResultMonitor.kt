@@ -15,10 +15,10 @@ class BuildResultMonitor {
             override fun buildFinished(result: BuildResult) {
                 super.buildFinished(result)
                 val buildError = ReportTypeFile.BUILD_ERR.getLog()
-                val buildErr = BuildErr()
-                buildErr.throwable = result.failure
-                BuildErrPrinter(buildError).execute(buildErr)
-                buildError.finish()
+             //   val buildErr = BuildErr()
+               // buildErr.throwable = result.failure
+             //   BuildErrPrinter(buildError).execute(buildErr)
+           //     buildError.finish()
             }
         })
     }
